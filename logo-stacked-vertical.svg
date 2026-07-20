@@ -1,0 +1,64 @@
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Metallic gradient for B -->
+        <linearGradient id="metallicGradientStack" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#a8a8a8;stop-opacity:1" />
+            <stop offset="30%" style="stop-color:#e8e8e8;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#f5f5f5;stop-opacity:1" />
+            <stop offset="70%" style="stop-color:#e8e8e8;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#a8a8a8;stop-opacity:1" />
+        </linearGradient>
+        
+        <linearGradient id="bGradientStack" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#f0f0f0;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#d0d0d0;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#a0a0a0;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    
+    <!-- Background -->
+    <rect width="400" height="600" fill="#0D1117"/>
+    
+    <!-- Icon (scaled up and centered) -->
+    <g transform="translate(75, 40)">
+        <!-- Metallic B -->
+        <path d="M 30 20 L 30 140 L 80 140 Q 105 140 105 120 Q 105 105 85 100 L 30 100 M 30 80 L 75 80 Q 100 80 100 65 Q 100 45 75 45 L 30 45" 
+              fill="url(#bGradientStack)" stroke="none"/>
+        
+        <!-- Metallic highlight -->
+        <path d="M 32 22 L 32 138 Q 35 140 75 140 Q 100 140 103 122 Q 103 108 88 103 L 32 103 M 32 82 L 73 82 Q 98 82 102 67 Q 102 47 73 47 L 32 47" 
+              fill="none" stroke="url(#metallicGradientStack)" stroke-width="1" opacity="0.5"/>
+        
+        <!-- Circuit traces -->
+        <g stroke="#2563EB" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M 115 40 L 135 40 L 135 60 L 110 60"/>
+            <path d="M 115 100 L 140 100 L 140 120 L 115 120"/>
+            <path d="M 110 140 L 130 140 L 130 125"/>
+        </g>
+        
+        <!-- Circuit nodes -->
+        <circle cx="135" cy="40" r="3" fill="#FF6A00"/>
+        <circle cx="135" cy="60" r="2.5" fill="#FF6A00" opacity="0.9"/>
+        <circle cx="140" cy="100" r="3" fill="#FF6A00"/>
+        <circle cx="140" cy="120" r="2.5" fill="#FF6A00" opacity="0.9"/>
+        <circle cx="130" cy="140" r="2.5" fill="#FF6A00"/>
+        <circle cx="130" cy="125" r="2" fill="#FF6A00" opacity="0.8"/>
+    </g>
+    
+    <!-- Divider line -->
+    <line x1="50" y1="280" x2="350" y2="280" stroke="#2563EB" stroke-width="1.5" opacity="0.3"/>
+    
+    <!-- Wordmark (stacked below) -->
+    <g transform="translate(200, 350)">
+        <!-- BLAZE centered -->
+        <text x="0" y="0" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+              font-size="72" font-weight="700" letter-spacing="-2" fill="#E5E7EB" text-anchor="middle">BLAZE</text>
+        
+        <!-- LOGIC centered below -->
+        <text x="0" y="80" font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+              font-size="72" font-weight="700" letter-spacing="-1.5" fill="#FF6A00" text-anchor="middle">LOGIC</text>
+        
+        <!-- Blue pulse line under -->
+        <line x1="-120" y1="110" x2="120" y2="110" stroke="#2563EB" stroke-width="2" opacity="0.6"/>
+    </g>
+</svg>

@@ -1,0 +1,75 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <!-- Metallic gradient for B -->
+        <linearGradient id="metallicGradientApp" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#a8a8a8;stop-opacity:1" />
+            <stop offset="30%" style="stop-color:#e8e8e8;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#f5f5f5;stop-opacity:1" />
+            <stop offset="70%" style="stop-color:#e8e8e8;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#a8a8a8;stop-opacity:1" />
+        </linearGradient>
+        
+        <linearGradient id="bGradientApp" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#f0f0f0;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#d0d0d0;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#a0a0a0;stop-opacity:1" />
+        </linearGradient>
+        
+        <!-- Corner radius for app icon -->
+        <filter id="roundedCorners">
+            <feMorphology operator="dilate" radius="40"/>
+        </filter>
+    </defs>
+    
+    <!-- Dark background with rounded corners -->
+    <rect width="512" height="512" fill="#0D1117" rx="80" ry="80"/>
+    
+    <!-- Inner gradient background -->
+    <rect width="512" height="512" fill="url(#bGradientApp)" rx="80" ry="80" opacity="0.08"/>
+    
+    <!-- Metallic B - scaled up for app icon -->
+    <g transform="translate(100, 90)">
+        <!-- Main B shape with metallic gradient -->
+        <path d="M 80 40 L 80 300 L 200 300 Q 280 300 280 260 Q 280 225 230 215 L 80 215 M 80 165 L 190 165 Q 270 165 270 130 Q 270 90 190 90 L 80 90" 
+              fill="url(#bGradientApp)" stroke="none" stroke-width="3"/>
+        
+        <!-- Metallic highlight on B -->
+        <path d="M 90 50 L 90 290 Q 95 298 180 298 Q 270 298 278 260 Q 278 230 235 220 L 90 220 M 90 170 L 185 170 Q 265 170 275 130 Q 275 95 185 95 L 90 95" 
+              fill="none" stroke="url(#metallicGradientApp)" stroke-width="3" opacity="0.4"/>
+        
+        <!-- Circuit traces - scaled and engineered -->
+        <g stroke="#2563EB" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Upper circuit line -->
+            <path d="M 310 85 L 365 85 L 365 135 L 280 135"/>
+            
+            <!-- Middle circuit line -->
+            <path d="M 310 210 L 380 210 L 380 270 L 310 270"/>
+            
+            <!-- Lower circuit line -->
+            <path d="M 280 300 L 360 300 L 360 280"/>
+        </g>
+        
+        <!-- Circuit nodes - orange accent dots with sizing -->
+        <circle cx="365" cy="85" r="8" fill="#FF6A00"/>
+        <circle cx="365" cy="135" r="7" fill="#FF6A00" opacity="0.9"/>
+        <circle cx="380" cy="210" r="8" fill="#FF6A00"/>
+        <circle cx="380" cy="270" r="7" fill="#FF6A00" opacity="0.9"/>
+        <circle cx="360" cy="300" r="7" fill="#FF6A00"/>
+        <circle cx="360" cy="280" r="6" fill="#FF6A00" opacity="0.85"/>
+        
+        <!-- Connecting junction points -->
+        <circle cx="280" cy="135" r="4" fill="#2563EB" opacity="0.7"/>
+        <circle cx="310" cy="210" r="4" fill="#2563EB" opacity="0.7"/>
+        <circle cx="310" cy="270" r="4" fill="#2563EB" opacity="0.6"/>
+    </g>
+    
+    <!-- Subtle depth effect -->
+    <defs>
+        <radialGradient id="appDepth" cx="50%" cy="30%" r="60%">
+            <stop offset="0%" style="stop-color:#2563EB;stop-opacity:0.1" />
+            <stop offset="100%" style="stop-color:#0D1117;stop-opacity:0" />
+        </radialGradient>
+    </defs>
+    
+    <rect width="512" height="512" fill="url(#appDepth)" rx="80" ry="80"/>
+</svg>
