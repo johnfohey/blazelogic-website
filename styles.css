@@ -286,17 +286,12 @@ a:hover {
     gap: 1.5rem;
     animation: fadeInDown 1s ease-out 0.1s both;
 }
-
-.hero-logo-svg {
-    width: 140px;
-    height: 140px;
-    filter: drop-shadow(0 0 30px rgba(37, 99, 235, 0.3));
-    animation: logoFloat 3s ease-in-out infinite;
-}
-
-@keyframes logoFloat {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+.hero-logo-image {
+    width: 360px;
+    max-width: 90%;
+    height: auto;
+    filter: drop-shadow(0 0 30px rgba(37,99,235,.25));
+    animation: fadeInDown 1s ease-out .1s both;
 }
 
 .logo-pulse-line {
