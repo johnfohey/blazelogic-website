@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 220"><defs><linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="55%" stop-color="#D9DCE2"/><stop offset="100%" stop-color="#8A93A3"/></linearGradient><linearGradient id="blue" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient></defs><g>
+<g fill="none" stroke="url(#blue)" stroke-width="5" stroke-linecap="round">
+<path d="M14 26H78L94 42"/><path d="M8 50H66L82 66"/><path d="M18 74H72L88 90"/>
+<path d="M10 98H58L76 116"/><path d="M20 122H74L92 140"/><path d="M12 146H62L82 166"/>
+</g>
+<g fill="#2563EB"><circle cx="14" cy="26" r="5"/><circle cx="8" cy="50" r="5"/><circle cx="18" cy="74" r="5"/><circle cx="10" cy="98" r="5"/><circle cx="20" cy="122" r="5"/><circle cx="12" cy="146" r="5"/></g>
+<g fill="#FF6A00"><circle cx="94" cy="42" r="5"/><circle cx="82" cy="66" r="5"/><circle cx="88" cy="90" r="5"/><circle cx="76" cy="116" r="5"/><circle cx="92" cy="140" r="5"/><circle cx="82" cy="166" r="5"/></g>
+<path d="M110 18H164C194 18 214 36 214 60C214 78 204 91 187 98C207 105 220 121 220 143C220 171 198 190 165 190H110ZM138 46V84H160C176 84 186 77 186 65C186 53 176 46 160 46ZM138 112V162H162C180 162 191 153 191 137C191 121 180 112 162 112Z" fill="url(#silver)"/>
+<path d="M108 152L137 123V151L111 177Z" fill="#0D1117"/><path d="M121 182L151 152V177L126 190Z" fill="#0D1117"/>
+</g>
+<g transform="translate(250 0)">
+<text x="0" y="126" font-family="Arial,Helvetica,sans-serif" font-size="92" font-weight="700" letter-spacing="6" fill="#E5E7EB">LAZE</text>
+<text x="338" y="126" font-family="Arial,Helvetica,sans-serif" font-size="92" font-weight="700" letter-spacing="4" fill="#FF6A00">LOGIC</text>
+<line x1="2" y1="152" x2="595" y2="152" stroke="#2563EB" stroke-width="4"/><circle cx="310" cy="152" r="8" fill="#3B82F6"/>
+</g></svg>
