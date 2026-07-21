@@ -139,11 +139,10 @@ a:hover {
     color: var(--blue);
 }
 
-.logo-text {
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.nav-logo {
+  height: 36px;
+  width: auto;
+  display: block;
 }
 
 .nav-menu {
