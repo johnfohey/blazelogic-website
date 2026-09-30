@@ -3,106 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BlazeLogic builds thoughtful, dependable software solutions. Precision engineering for real problems.">
-    <meta name="theme-color" content="#0D1117">
-    
-    <!-- SEO -->
-    <title>BlazeLogic — Software Built with Precision</title>
-    <meta name="keywords" content="software development, web applications, golf betting">
-    
+    <meta name="description" content="BlazeLogic LLC — Golf Bets: simple, premium golf betting games. First up: Golf Bets -- Nassau. Plus the AI Daily podcast, your weekday AI briefing.">
+    <meta name="theme-color" content="#0B0F14">
+
+    <title>BlazeLogic — Golf Betting Games & the AI Daily Podcast</title>
+
     <!-- Open Graph -->
-    <meta property="og:title" content="BlazeLogic — Software Built with Precision">
-    <meta property="og:description" content="BlazeLogic builds thoughtful, dependable software solutions.">
+    <meta property="og:title" content="BlazeLogic — Golf Betting Games & the AI Daily Podcast">
+    <meta property="og:description" content="Golf Bets -- Nassau is on the way: live scoring, automatic presses, instant settlement. One fair price, no ads, no subscription.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://blazelogic.io">
     <meta property="og:image" content="https://blazelogic.io/og-image.png">
-    
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="BlazeLogic — Software Built with Precision">
-    <meta name="twitter:description" content="BlazeLogic builds thoughtful, dependable software solutions.">
-    
+    <meta name="twitter:title" content="BlazeLogic — Golf Betting Games & the AI Daily Podcast">
+    <meta name="twitter:description" content="Golf Bets -- Nassau is on the way: live scoring, automatic presses, instant settlement. One fair price, no ads, no subscription.">
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.svg">
-    
-    <!-- Stylesheet -->
+
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="navbar-container">
-            <a href="#home" class="navbar-logo">
+            <a href="#top" class="navbar-logo">
                 <img src="logo-horizontal-transparent.PNG" alt="BlazeLogic" class="nav-logo">
             </a>
-            
+
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
-            
+
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#apps" class="nav-link">Golf Apps</a></li>
+                <li><a href="#podcast" class="nav-link">Podcast</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#products" class="nav-link">Products</a></li>
-                <li><a href="#approach" class="nav-link">Approach</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <!-- Animated Background Elements -->
+    <!-- Hero -->
+    <header id="top" class="hero">
         <div class="hero-background">
-            <svg class="circuit-traces" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice">
-                <defs>
-                    <linearGradient id="circuitGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#2563EB;stop-opacity:0.1" />
-                        <stop offset="50%" style="stop-color:#2563EB;stop-opacity:0.05" />
-                        <stop offset="100%" style="stop-color:#2563EB;stop-opacity:0" />
-                    </linearGradient>
-                </defs>
-                <!-- Subtle circuit lines -->
-                <path d="M 100 50 L 300 50 L 300 200 L 500 200 L 500 100" stroke="url(#circuitGradient)" stroke-width="1" fill="none" opacity="0.3"/>
-                <path d="M 800 150 L 1000 150 L 1000 350 L 900 350 L 900 250" stroke="url(#circuitGradient)" stroke-width="1" fill="none" opacity="0.2"/>
-                <path d="M 200 400 L 400 400 L 400 550 L 600 550" stroke="url(#circuitGradient)" stroke-width="1" fill="none" opacity="0.25"/>
-                <!-- Tech dots -->
-                <circle cx="300" cy="50" r="2" fill="#2563EB" opacity="0.4"/>
-                <circle cx="500" cy="100" r="1.5" fill="#2563EB" opacity="0.3"/>
-                <circle cx="1000" cy="150" r="2" fill="#2563EB" opacity="0.35"/>
-            </svg>
             <div class="gradient-orb gradient-orb-1"></div>
             <div class="gradient-orb gradient-orb-2"></div>
+            <div class="fairway-lines" aria-hidden="true"></div>
         </div>
 
-        <div class="hero-content">
-            <!-- Logo with Signature Pulse -->
-          <div class="hero-logo-wrapper">
-    <img src="logo-horizontal-transparent.PNG"
-         alt="BlazeLogic"
-         class="hero-logo-image">
-</div>
-                
-                
-            
-            <div class="hero-tagline">
-                <h2>Think Deeply.<br>Build Deliberately.<br>Improve Continuously.</h2>
+        <div class="hero-content container">
+            <div class="hero-text">
+                <p class="eyebrow">BlazeLogic LLC · Where ideas become solutions</p>
+                <h1>Golf Bets <span class="dash">--</span> Nassau</h1>
+                <p class="hero-sub">
+                    The Nassau game for your foursome. Live scoring, automatic presses,
+                    and instant settlement — right on the course.
+                </p>
+                <ul class="hero-points">
+                    <li>Free download — your first full round is on us</li>
+                    <li><strong>$4.99 once.</strong> No ads. No subscription.</li>
+                    <li>2–4 players · No, Auto &amp; Hardcore press modes</li>
+                </ul>
+                <div class="hero-buttons">
+                    <a href="#apps" class="btn btn-primary"><span>Explore the Apps</span></a>
+                    <a href="#podcast" class="btn btn-secondary"><span>Listen to AI Daily</span></a>
+                </div>
+                <p class="launch-note">Launching soon on iOS and Android</p>
             </div>
-            
-            <p class="hero-description">
-                We build thoughtful, dependable software that solves real problems. Every detail is considered. Every line of code is intentional.
-            </p>
-            
-            <div class="hero-buttons">
-                <a href="#products" class="btn btn-primary">
-                    <span>Explore Products</span>
-                </a>
-                <a href="#contact" class="btn btn-secondary">
-                    <span>Get In Touch</span>
-                </a>
+            <div class="hero-visual">
+                <img src="nassau-teaser.png" alt="Golf Bets -- Nassau app preview" class="hero-image">
+            </div>
+        </div>
+    </header>
+
+    <!-- Apps Section -->
+    <section id="apps" class="apps">
+        <div class="container">
+            <div class="section-header">
+                <p class="eyebrow">Golf Bets</p>
+                <h2>One game at a time.<br>Done right.</h2>
+                <p class="section-lede">
+                    A series of golf betting games, each a complete app of its own.
+                    No ads, no subscription — one fair price per game.
+                </p>
+            </div>
+
+            <!-- Featured: Nassau -->
+            <article class="app-featured">
+                <div class="app-featured-body">
+                    <div class="app-featured-top">
+                        <span class="status-pill status-soon">Launching soon</span>
+                        <span class="app-tag">Match play · 2–4 players</span>
+                    </div>
+                    <h3>Golf Bets -- Nassau</h3>
+                    <p>
+                        The classic Nassau — front nine, back nine, and the full 18 —
+                        scored live as you play. Presses handled automatically,
+                        payouts settled the moment the round ends.
+                    </p>
+                    <div class="press-modes">
+                        <span class="press-mode">No Presses</span>
+                        <span class="press-mode">Auto Presses</span>
+                        <span class="press-mode">Hardcore Presses</span>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Live score entry for every player</li>
+                        <li>Automatic press tracking &amp; settlement</li>
+                        <li>Match history and player stats</li>
+                        <li>How-to-play guide built in</li>
+                    </ul>
+                    <div class="pricing-line">
+                        <span class="price">Free download</span>
+                        <span class="price-sep">·</span>
+                        <span>First full round free</span>
+                        <span class="price-sep">·</span>
+                        <span><strong>$4.99</strong> lifetime unlock</span>
+                    </div>
+                </div>
+                <div class="app-featured-side">
+                    <img src="nassau-teaser.png" alt="Golf Bets -- Nassau preview" class="app-shot">
+                </div>
+            </article>
+
+            <!-- Roadmap -->
+            <div class="roadmap-grid">
+                <article class="roadmap-card">
+                    <span class="status-pill status-roadmap">On the roadmap</span>
+                    <h4>Skins</h4>
+                    <p>Every hole is worth a skin. Ties carry over until somebody takes it.</p>
+                </article>
+                <article class="roadmap-card">
+                    <span class="status-pill status-roadmap">On the roadmap</span>
+                    <h4>Wolf</h4>
+                    <p>Rotating tee order, pick your partner — or go Lone Wolf for double.</p>
+                </article>
+                <article class="roadmap-card">
+                    <span class="status-pill status-roadmap">On the roadmap</span>
+                    <h4>Stableford</h4>
+                    <p>Points-based scoring that keeps every hole competitive to the end.</p>
+                </article>
+            </div>
+            <p class="roadmap-note">Each future game: its own app, same deal — one fair price, no ads, no subscription.</p>
+        </div>
+    </section>
+
+    <!-- Podcast Section -->
+    <section id="podcast" class="podcast">
+        <div class="container podcast-grid">
+            <div class="podcast-art">
+                <img src="cat-mascot.png" alt="AI Daily podcast cover — the BlazeLogic cat mascot">
+            </div>
+            <div class="podcast-body">
+                <p class="eyebrow">The AI Daily Podcast</p>
+                <h2>AI Daily <span class="by">by BlazeLogic LLC</span></h2>
+                <p class="podcast-desc">
+                    Your weekday briefing on what's new in AI — hosted by Alex and Jordan,
+                    every Monday through Friday morning.
+                </p>
+                <blockquote class="podcast-opening">
+                    "From BlazeLogic — where ideas become solutions. Imagine it, build it, improve it."
+                </blockquote>
+                <div class="podcast-buttons">
+                    <a class="btn btn-podcast" href="https://podcasts.apple.com/us/podcast/ai-daily-by-blazelogic-llc-%F0%9F%90%88/id6817527320" target="_blank" rel="noopener">
+                        <span>Apple Podcasts</span>
+                    </a>
+                    <a class="btn btn-podcast" href="https://open.spotify.com/show/7Cn10TTwwopSbtUK8Dka5X" target="_blank" rel="noopener">
+                        <span>Spotify</span>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -111,162 +185,20 @@
     <section id="about" class="about">
         <div class="container">
             <div class="section-header">
-                <h2>About BlazeLogic</h2>
+                <p class="eyebrow">About</p>
+                <h2>BlazeLogic LLC</h2>
             </div>
-            
             <div class="about-content">
+                <p class="about-tagline">Imagine it, build it, improve it.</p>
                 <p>
-                    We build software with precision and care. Every line of code, every interaction, every detail is designed with intention. We believe the best software comes from deep understanding of problems and deliberate, thoughtful engineering.
+                    BlazeLogic is a small software company building things we'd want to use ourselves:
+                    golf games that settle the bets before the carts are parked, and a daily podcast
+                    that keeps up with AI so you don't have to.
                 </p>
                 <p>
-                    Our focus is on creating scalable, reliable products that make a real difference. We don't cut corners. We don't chase trends. We build software that works.
+                    Our promise is simple: <strong>no ads, no subscription, one fair price.</strong>
+                    Thoughtful software, built deliberately, improved continuously.
                 </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="products">
-        <div class="container">
-            <div class="section-header">
-                <h2>Products</h2>
-            </div>
-            
-            <div class="products-grid">
-                <!-- Golf Bets Card -->
-                <div class="product-card product-featured">
-                    <div class="product-card-top">
-                        <div class="product-icon">
-                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="2"/>
-                                <circle cx="28" cy="28" r="3" fill="currentColor"/>
-                                <circle cx="44" cy="44" r="2.5" fill="currentColor"/>
-                                <path d="M 28 28 Q 36 20 44 28 Q 40 40 32 48 Q 24 40 28 28" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                            </svg>
-                        </div>
-                        <span class="product-status">In Development</span>
-                    </div>
-                    
-                    <div class="product-card-content">
-                        <h3>Golf Bets</h3>
-                        <p class="product-description">
-                            Automated golf wagering and scoring. Simplify setup, calculations, results, and payouts.
-                        </p>
-                        
-                        <div class="product-features">
-                            <div class="feature-item">
-                                <span class="feature-icon">✓</span>
-                                <span>Live score entry</span>
-                            </div>
-                            <div class="feature-item">
-                                <span class="feature-icon">✓</span>
-                                <span>Nassau betting</span>
-                            </div>
-                            <div class="feature-item">
-                                <span class="feature-icon">✓</span>
-                                <span>Automatic settlement</span>
-                            </div>
-                            <div class="feature-item">
-                                <span class="feature-icon">✓</span>
-                                <span>Match history</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="product-card-footer">
-                        <span class="product-badge">Golf · Wagering</span>
-                        <button class="btn-product-coming" disabled>Coming Soon</button>
-                    </div>
-                </div>
-                
-                <!-- Future Product Placeholder 1 -->
-                <div class="product-card product-placeholder">
-                    <div class="product-card-top">
-                        <div class="product-icon placeholder-icon">
-                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="12" y="16" width="40" height="32" rx="2" stroke="currentColor" stroke-width="2"/>
-                                <path d="M 20 32 L 32 20 L 44 32 V 48" stroke="currentColor" stroke-width="2" fill="none"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="product-card-content">
-                        <h3>Next Product</h3>
-                        <p class="product-description">
-                            Something great in the works. Coming when it's ready.
-                        </p>
-                    </div>
-                </div>
-                
-                <!-- Future Product Placeholder 2 -->
-                <div class="product-card product-placeholder">
-                    <div class="product-card-top">
-                        <div class="product-icon placeholder-icon">
-                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M 20 40 L 32 20 L 44 40 M 28 36 L 36 36" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="product-card-content">
-                        <h3>Future Product</h3>
-                        <p class="product-description">
-                            Building carefully. Always thinking about what's next.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Approach Section -->
-    <section id="approach" class="approach">
-        <div class="container">
-            <div class="section-header">
-                <h2>Our Approach</h2>
-            </div>
-            
-            <div class="approach-grid">
-                <div class="approach-card">
-                    <div class="approach-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2l3 7h7l-5.5 4 2 7-6.5-5-6.5 5 2-7L2 9h7l3-7z"/>
-                        </svg>
-                    </div>
-                    <h3>Think Deeply</h3>
-                    <p>We take time to understand problems completely before building solutions.</p>
-                </div>
-                
-                <div class="approach-card">
-                    <div class="approach-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="18" height="18" rx="2"/>
-                            <path d="M9 11l3 3L22 4"/>
-                        </svg>
-                    </div>
-                    <h3>Build Deliberately</h3>
-                    <p>Every decision is intentional. We build with precision and purpose.</p>
-                </div>
-                
-                <div class="approach-card">
-                    <div class="approach-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="1"/>
-                            <path d="M12 8v8M12 3c3.314 0 6 2.686 6 6s-2.686 6-6 6-6-2.686-6-6 2.686-6 6-6z"/>
-                        </svg>
-                    </div>
-                    <h3>Test Thoroughly</h3>
-                    <p>We validate everything. Quality is non-negotiable.</p>
-                </div>
-                
-                <div class="approach-card">
-                    <div class="approach-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2v20M2 12h20"/>
-                            <circle cx="12" cy="12" r="10"/>
-                        </svg>
-                    </div>
-                    <h3>Improve Continuously</h3>
-                    <p>We listen, learn, and evolve. Great software is never finished.</p>
-                </div>
             </div>
         </div>
     </section>
@@ -275,59 +207,49 @@
     <section id="contact" class="contact">
         <div class="container">
             <div class="section-header">
+                <p class="eyebrow">Contact</p>
                 <h2>Get in Touch</h2>
+                <p class="section-lede">
+                    Questions about the apps, the podcast, or anything else —
+                    send a note to <a href="mailto:john@blazelogic.io" class="email-link">john@blazelogic.io</a>
+                    or use the form below.
+                </p>
             </div>
-            
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>BlazeLogic LLC</h3>
-                    <p><a href="mailto:john@blazelogic.io" class="email-link">john@blazelogic.io</a></p>
+
+            <form class="contact-form" id="contactForm" novalidate>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required autocomplete="name">
                 </div>
-                
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="6" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                    <p class="form-note">We'll get back to you as soon as possible.</p>
-                </form>
-            </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="6" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" id="contactSubmit"><span>Send Message</span></button>
+                <p class="form-note" id="formNote">We read everything and reply as soon as we can.</p>
+            </form>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <p>&copy; 2024 BlazeLogic LLC. All rights reserved.</p>
-                </div>
-                <div class="footer-section">
-                    <a href="#" class="footer-link">Privacy Policy</a>
-                    <a href="#" class="footer-link">Terms of Service</a>
-                </div>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <img src="logo-horizontal-transparent.PNG" alt="BlazeLogic" class="footer-logo">
+                <p>&copy; 2026 BlazeLogic LLC. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.instagram.com/blazelogic" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+                <a href="https://podcasts.apple.com/us/podcast/ai-daily-by-blazelogic-llc-%F0%9F%90%88/id6817527320" target="_blank" rel="noopener" class="footer-link">Podcast</a>
+                <a href="mailto:john@blazelogic.io" class="footer-link">Email</a>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="script.js"></script>
 </body>
 </html>
