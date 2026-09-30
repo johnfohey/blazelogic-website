@@ -387,7 +387,8 @@ a { color: inherit; }
    ABOUT
    =========================== */
 .about { padding: 90px 0; background: var(--bg-soft); }
-.about-content { max-width: 700px; }
+.about .section-header { text-align: center; }
+.about-content { max-width: 700px; margin: 0 auto; }
 .about-tagline {
     font-size: 1.5rem;
     font-weight: 700;
@@ -401,6 +402,14 @@ a { color: inherit; }
    CONTACT
    =========================== */
 .contact { padding: 90px 0; }
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 56px;
+    align-items: start;
+}
+.contact-grid .section-header { margin-bottom: 0; }
+.contact-grid .section-lede { max-width: none; }
 .email-link { color: var(--green); text-decoration: none; font-weight: 600; }
 .email-link:hover { text-decoration: underline; }
 
@@ -489,6 +498,7 @@ a { color: inherit; }
     .podcast-grid { grid-template-columns: 1fr; gap: 32px; }
     .podcast-art img { max-width: 280px; margin: 0 auto; }
     .roadmap-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 32px; }
 }
 
 @media (max-width: 700px) {
