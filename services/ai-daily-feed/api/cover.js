@@ -1,6 +1,6 @@
 // Serves the owner-approved AI Daily podcast cover as a stable public JPEG.
 const SOURCE =
-  'https://raw.githubusercontent.com/johnfohey/blazelogic-website/main/services/ai-daily-feed/assets/AI_Daily_Official_Podcast_Cover_1400.jpg.b64';
+  'https://raw.githubusercontent.com/johnfohey/blazelogic-website/main/services/ai-daily-feed/assets/AI_Daily_Official_Podcast_Cover_1400.jpg';
 
 module.exports = async (req, res) => {
   try {
@@ -14,8 +14,7 @@ module.exports = async (req, res) => {
       return;
     }
 
-    const b64 = (await upstream.text()).trim();
-    const image = Buffer.from(b64, 'base64');
+    const image = Buffer.from(await upstream.arrayBuffer());
 
     res.setHeader('Content-Type', 'image/jpeg');
     res.setHeader('Content-Length', String(image.length));
