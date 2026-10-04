@@ -7,12 +7,16 @@ const ORIGIN_FEED =
 const SELF_URL =
   'https://ai-daily-feed-blaze-logic.vercel.app/feed.xml';
 
+const COVER_URL =
+  'https://ai-daily-feed-blaze-logic.vercel.app/api/cover';
+
 const ITUNES_TAGS =
   '<itunes:author>BlazeLogic LLC</itunes:author>' +
   '<itunes:owner><itunes:name>BlazeLogic LLC</itunes:name>' +
   '<itunes:email>john@blazelogic.io</itunes:email></itunes:owner>' +
   '<itunes:type>episodic</itunes:type>' +
-  '<itunes:category text="Technology" />';
+  '<itunes:category text="Technology" />' +
+  '<itunes:image href="' + COVER_URL + '" />';
 
 module.exports = async (req, res) => {
   try {
@@ -60,11 +64,14 @@ module.exports = async (req, res) => {
       .replace(/<itunes:owner\b[^>]*>[\s\S]*?<\/itunes:owner>/ig, '')
       .replace(/<itunes:type\b[^>]*>[\s\S]*?<\/itunes:type>/ig, '')
       .replace(/<itunes:category\b[^>]*\/>/ig, '')
+      .replace(/<itunes:image\b[^>]*\/>/ig, '')
+      .replace(/<image\b[^>]*>[\s\S]*?<\/image>/ig, '')
       .replace(/<lastBuildDate\b[^>]*>[\s\S]*?<\/lastBuildDate>/ig, '')
       .replace(/<atom:link\b(?=[^>]*\brel=["']self["'])[^>]*\/?\s*>/ig, '');
 
     const injected =
       '<atom:link href="' + SELF_URL + '" rel="self" type="application/rss+xml" />' +
+      '<image><url>' + COVER_URL + '</url><title>AI Daily by BlazeLogic LLC</title><link>https://blazelogic.io</link></image>' +
       ITUNES_TAGS +
       '<lastBuildDate>' + new Date().toUTCString() + '</lastBuildDate>';
 
