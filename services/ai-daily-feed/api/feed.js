@@ -1,5 +1,6 @@
 // Stable Apple/Spotify wrapper for AI Daily by BlazeLogic LLC.
 // Keeps the public wrapper URL unchanged while sourcing episodes from Muse.
+// The owner-approved happy-Blaze artwork is enforced at both show and episode level.
 
 const ORIGIN_FEED =
   'https://muse.ai/podcasts/feed/1443332972186099/0e8d610d-7cce-4155-8fd9-68ef71904ae2';
@@ -7,8 +8,11 @@ const ORIGIN_FEED =
 const SELF_URL =
   'https://ai-daily-feed-blaze-logic.vercel.app/feed.xml';
 
+// Keep a version token in the artwork URL so podcast directories do not keep
+// serving an older cached cover after an owner-approved artwork replacement.
+const COVER_VERSION = 'happy-blaze-20261004';
 const COVER_URL =
-  'https://ai-daily-feed-blaze-logic.vercel.app/api/cover';
+  'https://ai-daily-feed-blaze-logic.vercel.app/api/cover?v=' + COVER_VERSION;
 
 const ITUNES_TAGS =
   '<itunes:author>BlazeLogic LLC</itunes:author>' +
@@ -18,11 +22,31 @@ const ITUNES_TAGS =
   '<itunes:category text="Technology" />' +
   '<itunes:image href="' + COVER_URL + '" />';
 
+function enforceApprovedEpisodeArtwork(xml) {
+  return xml.replace(/<item\b[^>]*>[\s\S]*?<\/item>/gi, (item) => {
+    let cleaned = item
+      // Remove upstream episode artwork so old artwork cannot override the
+      // owner-approved happy-Blaze image in Apple Podcasts or Spotify.
+      .replace(/<itunes:image\b[^>]*\/>/gi, '')
+      .replace(/<itunes:image\b[^>]*>[\s\S]*?<\/itunes:image>/gi, '')
+      // Remove common image-only media thumbnails that may otherwise be used
+      // as episode artwork by consuming apps. Audio/video media remains intact.
+      .replace(/<media:thumbnail\b[^>]*\/?\s*>/gi, '');
+
+    cleaned = cleaned.replace(
+      /(<item\b[^>]*>)/i,
+      '$1<itunes:image href="' + COVER_URL + '" />'
+    );
+
+    return cleaned;
+  });
+}
+
 module.exports = async (req, res) => {
   try {
     const upstream = await fetch(ORIGIN_FEED, {
       headers: {
-        'User-Agent': 'BlazeLogic-Feed-Proxy/2.0 (+https://blazelogic.io)',
+        'User-Agent': 'BlazeLogic-Feed-Proxy/3.0 (+https://blazelogic.io)',
       },
       redirect: 'follow',
     });
@@ -56,7 +80,7 @@ module.exports = async (req, res) => {
     }
 
     let head = xml.slice(0, firstItem);
-    const tail = xml.slice(firstItem);
+    let tail = xml.slice(firstItem);
 
     // Remove channel-level copies before injecting one authoritative set.
     head = head
@@ -68,6 +92,9 @@ module.exports = async (req, res) => {
       .replace(/<image\b[^>]*>[\s\S]*?<\/image>/ig, '')
       .replace(/<lastBuildDate\b[^>]*>[\s\S]*?<\/lastBuildDate>/ig, '')
       .replace(/<atom:link\b(?=[^>]*\brel=["']self["'])[^>]*\/?\s*>/ig, '');
+
+    // Enforce the approved artwork on every existing and future episode.
+    tail = enforceApprovedEpisodeArtwork(tail);
 
     const injected =
       '<atom:link href="' + SELF_URL + '" rel="self" type="application/rss+xml" />' +
