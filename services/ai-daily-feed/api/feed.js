@@ -1,4 +1,4 @@
-// Stable Apple/Spotify wrapper for AI Daily by BlazeLogic LLC.
+// Stable Apple/Spotify wrapper for Fairways & Side Bets by BlazeLogic.
 // Keeps the public wrapper URL unchanged while sourcing episodes from Muse.
 // The owner-approved happy-Blaze artwork is enforced at both show and episode level.
 
@@ -7,6 +7,10 @@ const ORIGIN_FEED =
 
 const SELF_URL =
   'https://ai-daily-feed-blaze-logic.vercel.app/feed.xml';
+
+const SHOW_TITLE = 'Fairways & Side Bets by BlazeLogic';
+const SHOW_DESCRIPTION =
+  'A golf-first show for everyday golfers. Alex and Jordan cover the week\'s golf stories, side games like Nassau, Skins and Wolf, golf technology, equipment, rules, and practical ideas for your next round. New episodes Monday, Wednesday, and Friday.';
 
 // Keep a version token in the artwork URL so podcast directories do not keep
 // serving an older cached cover after an owner-approved artwork replacement.
@@ -19,7 +23,7 @@ const ITUNES_TAGS =
   '<itunes:owner><itunes:name>BlazeLogic LLC</itunes:name>' +
   '<itunes:email>john@blazelogic.io</itunes:email></itunes:owner>' +
   '<itunes:type>episodic</itunes:type>' +
-  '<itunes:category text="Technology" />' +
+  '<itunes:category text="Sports"><itunes:category text="Golf" /></itunes:category>' +
   '<itunes:image href="' + COVER_URL + '" />';
 
 function enforceGolfFirstEpisodeTitles(xml) {
@@ -96,6 +100,22 @@ module.exports = async (req, res) => {
     let head = xml.slice(0, firstItem);
     let tail = xml.slice(firstItem);
 
+    // Enforce the owner-approved public show identity while keeping the stable
+    // feed URL and legacy episode GUIDs unchanged.
+    head = head
+      .replace(
+        /<title\b[^>]*>[\s\S]*?<\/title>/i,
+        '<title>' + SHOW_TITLE.replace(/&/g, '&amp;') + '</title>'
+      )
+      .replace(
+        /<description\b[^>]*>[\s\S]*?<\/description>/i,
+        '<description>' + SHOW_DESCRIPTION.replace(/&/g, '&amp;') + '</description>'
+      )
+      .replace(
+        /<itunes:summary\b[^>]*>[\s\S]*?<\/itunes:summary>/i,
+        '<itunes:summary>' + SHOW_DESCRIPTION.replace(/&/g, '&amp;') + '</itunes:summary>'
+      );
+
     // Remove channel-level copies before injecting one authoritative set.
     head = head
       .replace(/<itunes:author\b[^>]*>[\s\S]*?<\/itunes:author>/ig, '')
@@ -113,7 +133,7 @@ module.exports = async (req, res) => {
 
     const injected =
       '<atom:link href="' + SELF_URL + '" rel="self" type="application/rss+xml" />' +
-      '<image><url>' + COVER_URL + '</url><title>AI Daily by BlazeLogic LLC</title><link>https://blazelogic.io</link></image>' +
+      '<image><url>' + COVER_URL + '</url><title>' + SHOW_TITLE.replace(/&/g, '&amp;') + '</title><link>https://blazelogic.io</link></image>' +
       ITUNES_TAGS +
       '<lastBuildDate>' + new Date().toUTCString() + '</lastBuildDate>';
 
