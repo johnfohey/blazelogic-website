@@ -22,6 +22,20 @@ const ITUNES_TAGS =
   '<itunes:category text="Technology" />' +
   '<itunes:image href="' + COVER_URL + '" />';
 
+function enforceGolfFirstEpisodeTitles(xml) {
+  return xml.replace(/<item\b[^>]*>[\s\S]*?<\/item>/gi, (item) => {
+    // Owner-approved correction: the Oct. 7 golf-first episode must not carry
+    // the retired AI Daily prefix. Preserve legacy AI Daily episode titles.
+    if (/ep-40c80288-cc0e-4de1-8f92-393a39e97cd6/i.test(item)) {
+      return item.replace(
+        /<title>AI Daily\s*[—-]\s*Everyday Golfer\s*\/\s*BlazeLogic\s*[—-]\s*October 7, 2026<\/title>/i,
+        '<title>Everyday Golfer / BlazeLogic — October 7, 2026</title>'
+      );
+    }
+    return item;
+  });
+}
+
 function enforceApprovedEpisodeArtwork(xml) {
   return xml.replace(/<item\b[^>]*>[\s\S]*?<\/item>/gi, (item) => {
     let cleaned = item
@@ -93,7 +107,8 @@ module.exports = async (req, res) => {
       .replace(/<lastBuildDate\b[^>]*>[\s\S]*?<\/lastBuildDate>/ig, '')
       .replace(/<atom:link\b(?=[^>]*\brel=["']self["'])[^>]*\/?\s*>/ig, '');
 
-    // Enforce the approved artwork on every existing and future episode.
+    // Enforce owner-approved golf-first title corrections, then approved artwork.
+    tail = enforceGolfFirstEpisodeTitles(tail);
     tail = enforceApprovedEpisodeArtwork(tail);
 
     const injected =
