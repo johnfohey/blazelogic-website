@@ -122,12 +122,20 @@ a { color: inherit; }
     align-items: center;
     justify-content: space-between;
 }
-.nav-logo { height: 40px; width: auto; }
+.nav-logo { height: 40px; width: 40px; border-radius: 50%; }
 .navbar-logo {
     display: inline-flex;
     align-items: center;
+    gap: 10px;
     text-decoration: none;
-    line-height: 0;
+    line-height: 1.2;
+}
+.nav-wordmark {
+    font-size: 1.35rem;
+    font-weight: 800;
+    font-style: italic;
+    color: #ffffff;
+    letter-spacing: 0.5px;
 }
 .nav-menu {
     list-style: none;
@@ -464,7 +472,20 @@ a { color: inherit; }
     gap: 20px;
     flex-wrap: wrap;
 }
-.footer-logo { height: 28px; width: auto; margin-bottom: 10px; }
+.footer-brandmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+.footer-logo { height: 30px; width: 30px; border-radius: 50%; }
+.footer-wordmark {
+    font-size: 1.05rem;
+    font-weight: 800;
+    font-style: italic;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
 .footer-brand p { color: var(--text-muted); font-size: 0.9rem; }
 .footer-links { display: flex; gap: 20px; }
 .footer-link {
