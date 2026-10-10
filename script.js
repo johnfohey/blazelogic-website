@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, { passive: true });
 
-    // ---------- Contact form (real delivery via FormSubmit) ----------
+    // ---------- Contact form (real delivery via Web3Forms) ----------
     const form = document.getElementById('contactForm');
     const submitButton = document.getElementById('contactSubmit');
     const formNote = document.getElementById('formNote');
@@ -66,25 +66,27 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.innerHTML = '<span>Sending…</span>';
         formNote.textContent = '';
 
-        fetch('https://formsubmit.co/ajax/john@blazelogic.io', {
+        fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
+                access_key: '6ce66a05-5d8b-4fff-9b18-2dd4571f0983',
                 name: name,
                 email: email,
                 message: message,
-                _subject: 'blazelogic.io contact: ' + name,
-                _template: 'table'
+                subject: 'blazelogic.io contact: ' + name,
+                from_name: 'blazelogic.io contact form'
             })
         })
         .then(function(response) {
             if (!response.ok) throw new Error('send failed');
             return response.json();
         })
-        .then(function() {
+        .then(function(data) {
+            if (!data.success) throw new Error('send failed');
             form.reset();
             formNote.textContent = 'Message sent — thanks! We\u2019ll get back to you soon.';
             formNote.classList.add('success');
