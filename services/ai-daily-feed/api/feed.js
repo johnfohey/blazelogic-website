@@ -1,6 +1,6 @@
 // Stable Apple/Spotify wrapper for Fairways & Side Bets by BlazeLogic.
 // Keeps the public wrapper URL unchanged while sourcing episodes from Muse.
-// The owner-approved happy-Blaze artwork is enforced at both show and episode level.
+// The owner-approved Fairways & Side Bets artwork is enforced at both show and episode level.
 
 const ORIGIN_FEED =
   'https://muse.ai/podcasts/feed/1443332972186099/0e8d610d-7cce-4155-8fd9-68ef71904ae2';
@@ -14,7 +14,7 @@ const SHOW_DESCRIPTION =
 
 // Keep a version token in the artwork URL so podcast directories do not keep
 // serving an older cached cover after an owner-approved artwork replacement.
-const COVER_VERSION = 'happy-blaze-20261004';
+const COVER_VERSION = 'fairways-side-bets-approved-20261010';
 const COVER_URL =
   'https://ai-daily-feed-blaze-logic.vercel.app/api/cover?v=' + COVER_VERSION;
 
@@ -44,7 +44,7 @@ function enforceApprovedEpisodeArtwork(xml) {
   return xml.replace(/<item\b[^>]*>[\s\S]*?<\/item>/gi, (item) => {
     let cleaned = item
       // Remove upstream episode artwork so old artwork cannot override the
-      // owner-approved happy-Blaze image in Apple Podcasts or Spotify.
+      // owner-approved Fairways & Side Bets image in Apple Podcasts or Spotify.
       .replace(/<itunes:image\b[^>]*\/>/gi, '')
       .replace(/<itunes:image\b[^>]*>[\s\S]*?<\/itunes:image>/gi, '')
       // Remove common image-only media thumbnails that may otherwise be used

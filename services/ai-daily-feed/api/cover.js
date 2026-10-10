@@ -1,6 +1,6 @@
-// Serves the owner-approved AI Daily podcast cover as a stable public JPEG.
+// Serves the owner-approved Fairways & Side Bets podcast cover as a stable public JPEG.
 const SOURCE =
-  'https://raw.githubusercontent.com/johnfohey/blazelogic-website/main/services/ai-daily-feed/assets/AI_Daily_Official_Podcast_Cover_1400.jpg';
+  'https://raw.githubusercontent.com/johnfohey/blazelogic-website/main/services/ai-daily-feed/assets/Fairways_Side_Bets_FINAL_Approved_1400.jpg';
 
 module.exports = async (req, res) => {
   try {
