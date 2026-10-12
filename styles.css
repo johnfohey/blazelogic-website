@@ -298,6 +298,14 @@ a { color: inherit; }
     border: 1px solid var(--border);
     background: rgba(255,255,255,0.03);
 }
+.press-explainer {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: -6px 0 20px;
+    max-width: 600px;
+}
+.press-explainer strong { color: var(--text); }
 
 .feature-list { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
 .feature-list li {
