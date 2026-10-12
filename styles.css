@@ -297,15 +297,56 @@ a { color: inherit; }
     border-radius: 999px;
     border: 1px solid var(--border);
     background: rgba(255,255,255,0.03);
+    color: var(--text);
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
-.press-explainer {
-    font-size: 0.95rem;
+.press-mode:hover { border-color: rgba(255,255,255,0.35); }
+.press-mode.is-active {
+    border-color: var(--green);
+    background: rgba(52, 211, 153, 0.12);
+    box-shadow: 0 0 0 1px var(--green);
+}
+.press-detail {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: -6px 0 22px;
+    background: rgba(255,255,255,0.02);
+    max-width: 640px;
+}
+.press-detail h4 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    color: var(--text);
+}
+.press-detail h4 .press-tag {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--green);
+    margin-bottom: 4px;
+}
+.press-detail p {
+    margin: 0;
     color: var(--text-muted);
     line-height: 1.65;
-    margin: -6px 0 20px;
-    max-width: 600px;
+    font-size: 0.95rem;
 }
-.press-explainer strong { color: var(--text); }
+.press-detail p strong { color: var(--text); }
+.press-detail .press-note {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+.press-detail-fade { animation: pressFade 0.25s ease; }
+@keyframes pressFade {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: none; }
+}
 
 .feature-list { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
 .feature-list li {
