@@ -109,17 +109,12 @@
                         scored live as you play. Presses handled automatically,
                         payouts settled the moment the round ends.
                     </p>
-                    <div class="press-modes">
-                        <span class="press-mode">No Presses</span>
-                        <span class="press-mode">Auto Presses</span>
-                        <span class="press-mode">Hardcore Presses</span>
+                    <div class="press-modes" role="group" aria-label="Press modes — tap one to learn more">
+                        <button type="button" class="press-mode" data-press="none" aria-pressed="false"><span>No Presses</span></button>
+                        <button type="button" class="press-mode is-active" data-press="auto" aria-pressed="true"><span>Auto Presses</span></button>
+                        <button type="button" class="press-mode" data-press="hardcore" aria-pressed="false"><span>Hardcore Presses</span></button>
                     </div>
-                    <p class="press-explainer">
-                        Fall <strong>2 holes down</strong> and a press opens on the next hole — same stake,
-                        all square, no haggling. <strong>Auto Press</strong> keeps the original bet running;
-                        <strong>Hardcore Press</strong> closes it as a loss and starts fresh.
-                        Presses are capped at two per nine: original → Press #1 → Press #2. No Press #3.
-                    </p>
+                    <div class="press-detail" id="pressDetail" aria-live="polite"></div>
                     <ul class="feature-list">
                         <li>Live score entry for every player</li>
                         <li>Automatic press tracking &amp; settlement</li>

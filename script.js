@@ -125,4 +125,46 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         revealTargets.forEach(function(el) { el.classList.add('visible'); });
     }
+
+    // ---------- Press mode toggles ----------
+    var pressDetails = {
+        none: {
+            tag: 'No Presses',
+            title: 'Keep it simple',
+            body: 'Play the original Nassau bets with no additional presses. Front, back, overall — and that is the whole story. No extra wagers get created, no matter how far anyone falls behind.'
+        },
+        auto: {
+            tag: 'Auto Press',
+            title: 'The comeback engine',
+            body: 'When a player falls <strong>2 holes down</strong>, a new press opens automatically on the next hole — all square, same stake — while the original bet keeps running. A press can trigger its own press, but the chain is capped: original → Press #1 → Press #2. <strong>No Press #3.</strong>'
+        },
+        hardcore: {
+            tag: 'Hardcore Press',
+            title: 'Double or nothing',
+            body: 'When a player falls <strong>2 holes down</strong>, the current bet ends immediately as a loss and a fresh bet starts all square on the next hole — same stake. The replacement chain is capped: original → Press #1 → Press #2, then stop. If Press #2 goes 2 down, it closes with no replacement.'
+        }
+    };
+    var pressFootnote = 'Presses trigger on <strong>holes down</strong>, not strokes — and they are fully automatic: no offers, no declines.';
+    var pressButtons = document.querySelectorAll('.press-mode[data-press]');
+    var pressDetail = document.getElementById('pressDetail');
+    function renderPress(key) {
+        var d = pressDetails[key];
+        if (!d || !pressDetail) return;
+        pressDetail.innerHTML = '<h4><span class="press-tag">' + d.tag + '</span>' + d.title + '</h4><p>' + d.body + '</p><p class="press-note">' + pressFootnote + '</p>';
+        pressDetail.classList.remove('press-detail-fade');
+        void pressDetail.offsetWidth;
+        pressDetail.classList.add('press-detail-fade');
+    }
+    pressButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            pressButtons.forEach(function(b) {
+                b.classList.remove('is-active');
+                b.setAttribute('aria-pressed', 'false');
+            });
+            btn.classList.add('is-active');
+            btn.setAttribute('aria-pressed', 'true');
+            renderPress(btn.getAttribute('data-press'));
+        });
+    });
+    if (pressButtons.length && pressDetail) renderPress('auto');
 });
