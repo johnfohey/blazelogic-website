@@ -1,0 +1,34 @@
+name: Refresh podcast episodes
+
+# Keeps episodes.json in sync with the live Fairways & Side Bets RSS feed.
+# The feed is the single source of truth; this just mirrors it into a
+# same-origin JSON file the static site can read (GitHub Pages has no
+# server, and browsers block cross-origin feed reads).
+#
+# Schedule: Mon/Wed/Fri 14:15 UTC (9:15 AM CDT / 8:15 AM CST -- safely after the
+# 7:08 AM CT episode publish) plus a daily 16:15 UTC safety net.
+
+on:
+  schedule:
+    - cron: '15 14 * * 1,3,5'
+    - cron: '15 16 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch latest episodes from the live feed
+        run: python3 .github/scripts/fetch_episodes.py
+
+      - name: Commit episodes.json if it changed
+        run: |
+          git config user.name "BlazeLogic Episodes"
+          git config user.email "john@blazelogic.io"
+          git add episodes.json
+          git diff --cached --quiet || (git commit -m "Refresh podcast episodes from live feed" && git push)
