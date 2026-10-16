@@ -24,6 +24,7 @@
     <link rel="icon" type="image/png" href="brand/flaming-b.png">
     <link rel="apple-touch-icon" href="brand/flaming-b.png">
 
+    <link rel="preload" as="image" href="hero-golf-dusk.jpg" fetchpriority="high">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -52,36 +53,33 @@
     </nav>
 
     <!-- Hero -->
-    <header id="top" class="hero">
-        <div class="hero-background">
-            <div class="gradient-orb gradient-orb-1"></div>
-            <div class="gradient-orb gradient-orb-2"></div>
-            <div class="fairway-lines" aria-hidden="true"></div>
+    <header id="top" class="hero-cinematic">
+        <div class="hero-bg" aria-hidden="true">
+            <img src="hero-golf-dusk.jpg" alt="" fetchpriority="high">
+            <div class="hero-shade"></div>
         </div>
 
         <div class="hero-content container">
             <div class="hero-text">
-                <p class="eyebrow">BlazeLogic LLC · Where ideas become solutions</p>
-                <h1>Golf Bets <span class="dash">--</span> Nassau</h1>
+                <p class="eyebrow">Golf Bets by BlazeLogic.</p>
+                <h1>EVERY HOLE<br><span class="blue">HAS A PRICE.</span></h1>
                 <p class="hero-sub">
-                    The Nassau game for your foursome. Live scoring, automatic presses,
-                    and instant settlement — right on the course.
+                    Golf betting games for your foursome. Live scoring, automatic presses,
+                    and instant settlement &mdash; right on the course.
                 </p>
-                <ul class="hero-points">
-                    <li>Free download — your first full round is on us</li>
-                    <li><strong>$4.99 once.</strong> No ads. No subscription.</li>
-                    <li>2–4 players · No, Auto &amp; Hardcore press modes</li>
-                </ul>
                 <div class="hero-buttons">
-                    <a href="#apps" class="btn btn-primary"><span>Explore the Apps</span></a>
-                    <a href="#podcast" class="btn btn-secondary"><span>Listen to Fairways &amp; Side Bets</span></a>
+                    <a href="#apps" class="btn btn-blue"><span>Explore Golf Bets</span></a>
+                    <a href="how-to-play-nassau.html" class="btn btn-secondary"><span>How to Play Nassau</span></a>
                 </div>
+                <p class="hero-trust">First round free &middot; <strong>$4.99 one-time purchase.</strong></p>
                 <p class="launch-note">Launching soon on iOS and Android</p>
             </div>
-            <div class="hero-visual">
-                <img src="nassau-teaser.png" alt="Golf Bets -- Nassau app preview" class="hero-image">
+            <div class="hero-mark" aria-hidden="true">
+                <img src="brand/flaming-b-hero.png" alt="">
             </div>
         </div>
+
+        <a href="#apps" class="scroll-cue" aria-label="Scroll to Golf Bets"><span></span></a>
     </header>
 
     <!-- Apps Section -->
