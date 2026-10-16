@@ -236,6 +236,12 @@ document.addEventListener('DOMContentLoaded', function() {
     audio.addEventListener('play', function () { setPlayingUI(true); });
     audio.addEventListener('pause', function () { setPlayingUI(false); });
     audio.addEventListener('ended', function () { setPlayingUI(false); });
+    audio.addEventListener('error', function () {
+        setPlayingUI(false);
+        descEl.innerHTML = 'This episode wouldn\u2019t load in this browser \u2014 you can still listen on ' +
+            '<a href="https://open.spotify.com/show/7Cn10TTwwopSbtUK8Dka5X" target="_blank" rel="noopener">Spotify</a> or ' +
+            '<a href="https://podcasts.apple.com/us/podcast/fairways-side-bets-by-blazelogic/id6821447754" target="_blank" rel="noopener">Apple Podcasts</a>.';
+    });
     audio.addEventListener('timeupdate', function () {
         if (audio.duration) {
             var pct = (audio.currentTime / audio.duration) * 100;
