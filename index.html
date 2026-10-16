@@ -160,25 +160,53 @@
 
     <!-- Podcast Section -->
     <section id="podcast" class="podcast">
-        <div class="container podcast-grid">
-            <div class="podcast-art">
-                <img src="services/ai-daily-feed/assets/Fairways_Side_Bets_FINAL_Approved_1400.jpg" alt="Fairways &amp; Side Bets by BlazeLogic podcast cover, featuring Blaze with a plain black microphone" loading="lazy">
-            </div>
-            <div class="podcast-body">
+        <div class="container">
+            <div class="section-header podcast-header">
                 <p class="eyebrow">The Fairways &amp; Side Bets Podcast</p>
-                <h2>Fairways &amp; Side Bets <span class="by">by BlazeLogic</span></h2>
-                <p class="podcast-desc">
-                    A golf podcast for real golfers — hosted by Alex and Jordan,
-                    every Monday, Wednesday, and Friday morning.
-                </p>
-                <blockquote class="podcast-opening">
-                    "From BlazeLogic — where ideas become solutions. Imagine it, build it, improve it."
-                </blockquote>
-                <div class="podcast-buttons">
-                    <a class="btn btn-podcast" href="https://open.spotify.com/show/7Cn10TTwwopSbtUK8Dka5X" target="_blank" rel="noopener">
-                        <span>Spotify</span>
-                    </a>
+                <h2>Listen to the <span class="hl-blue">show</span></h2>
+                <p class="section-lede">A golf podcast for real golfers &mdash; hosted by Alex and Jordan, every Monday, Wednesday, and Friday morning. New episodes land here automatically.</p>
+            </div>
+            <div class="podcast-grid">
+                <div class="podcast-art">
+                    <img src="services/ai-daily-feed/assets/Fairways_Side_Bets_FINAL_Approved_1400.jpg" alt="Fairways &amp; Side Bets by BlazeLogic podcast cover, featuring Blaze with a plain black microphone" loading="lazy">
                 </div>
+                <div class="player-wrap">
+                    <div class="player-card" id="playerCard">
+                        <span class="player-pill" id="playerPill">Latest episode</span>
+                        <h3 class="player-title" id="epTitle">Loading episodes&hellip;</h3>
+                        <p class="player-meta" id="epMeta"></p>
+                        <p class="player-desc" id="epDesc"></p>
+                        <div class="player-controls">
+                            <button class="ctl-btn skip" id="back15" aria-label="Back 15 seconds" title="Back 15 seconds">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+                                <span>15</span>
+                            </button>
+                            <button class="play-btn" id="playBtn" aria-label="Play episode">
+                                <svg id="iconPlay" viewBox="0 0 24 24" width="26" height="26"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                                <svg id="iconPause" viewBox="0 0 24 24" width="26" height="26" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z" fill="currentColor"/></svg>
+                            </button>
+                            <button class="ctl-btn skip" id="fwd15" aria-label="Forward 15 seconds" title="Forward 15 seconds">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
+                                <span>15</span>
+                            </button>
+                            <button class="speed-btn" id="speedBtn" aria-label="Playback speed" title="Playback speed">1&times;</button>
+                        </div>
+                        <div class="progress" id="progressTrack" role="slider" tabindex="0" aria-label="Seek through episode" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                            <div class="progress-buffered" id="bufferedBar"></div>
+                            <div class="progress-played" id="playedBar"></div>
+                        </div>
+                        <div class="time-row"><span id="timeCur">0:00</span><span id="timeDur">&ndash;:&#8211;&#8211;</span></div>
+                        <audio id="podAudio" preload="metadata"></audio>
+                    </div>
+                    <div class="recent-eps">
+                        <h4>Recent episodes</h4>
+                        <div id="recentRows"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="podcast-follow">
+                <a class="btn btn-spotify" href="https://open.spotify.com/show/7Cn10TTwwopSbtUK8Dka5X" target="_blank" rel="noopener"><span>Follow on Spotify</span></a>
+                <a class="btn btn-secondary" href="https://podcasts.apple.com/us/podcast/fairways-side-bets-by-blazelogic/id6821447754" target="_blank" rel="noopener"><span>Apple Podcasts</span></a>
             </div>
         </div>
     </section>
