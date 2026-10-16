@@ -168,3 +168,146 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     if (pressButtons.length && pressDetail) renderPress('auto');
 });
+/* ===========================
+   PODCAST PLAYER — Fairways & Side Bets
+   Reads episodes.json (mirrored from the live RSS feed by a scheduled
+   GitHub Action). Latest episode loads in the player; the 3 most recent
+   are selectable below it.
+   =========================== */
+(function () {
+    var card = document.getElementById('playerCard');
+    if (!card) return;
+    var audio = document.getElementById('podAudio');
+    var playBtn = document.getElementById('playBtn');
+    var iconPlay = document.getElementById('iconPlay');
+    var iconPause = document.getElementById('iconPause');
+    var track = document.getElementById('progressTrack');
+    var playedBar = document.getElementById('playedBar');
+    var bufferedBar = document.getElementById('bufferedBar');
+    var timeCur = document.getElementById('timeCur');
+    var timeDur = document.getElementById('timeDur');
+    var speedBtn = document.getElementById('speedBtn');
+    var pill = document.getElementById('playerPill');
+    var titleEl = document.getElementById('epTitle');
+    var metaEl = document.getElementById('epMeta');
+    var descEl = document.getElementById('epDesc');
+    var rowsEl = document.getElementById('recentRows');
+    var episodes = [], current = -1;
+    var speeds = [1, 1.25, 1.5, 2], speedIx = 0;
+
+    function fmt(s) {
+        if (!isFinite(s) || s < 0) return '0:00';
+        s = Math.floor(s);
+        var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+        return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(sec).padStart(2, '0');
+    }
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+    function setPlayingUI(playing) {
+        iconPlay.style.display = playing ? 'none' : 'block';
+        iconPause.style.display = playing ? 'block' : 'none';
+        playBtn.setAttribute('aria-label', playing ? 'Pause episode' : 'Play episode');
+    }
+    function loadEpisode(i, autoplay) {
+        current = i;
+        var ep = episodes[i];
+        audio.src = ep.audioUrl;
+        audio.playbackRate = speeds[speedIx];
+        titleEl.textContent = ep.title;
+        metaEl.textContent = ep.pubDateDisplay + (ep.durationDisplay ? ' \u00B7 ' + ep.durationDisplay : '');
+        descEl.textContent = ep.description || '';
+        pill.textContent = i === 0 ? 'Latest episode' : 'Now playing';
+        timeCur.textContent = '0:00';
+        timeDur.textContent = ep.durationDisplay || '\u2013:\u2013\u2013';
+        playedBar.style.width = '0%';
+        bufferedBar.style.width = '0%';
+        track.setAttribute('aria-valuenow', '0');
+        var rows = rowsEl.children;
+        for (var r = 0; r < rows.length; r++) rows[r].classList.toggle('is-active', r === i);
+        if (autoplay) { audio.play().catch(function () {}); }
+    }
+    playBtn.addEventListener('click', function () {
+        if (!episodes.length) return;
+        if (audio.paused) { audio.play().catch(function () {}); } else { audio.pause(); }
+    });
+    audio.addEventListener('play', function () { setPlayingUI(true); });
+    audio.addEventListener('pause', function () { setPlayingUI(false); });
+    audio.addEventListener('ended', function () { setPlayingUI(false); });
+    audio.addEventListener('timeupdate', function () {
+        if (audio.duration) {
+            var pct = (audio.currentTime / audio.duration) * 100;
+            playedBar.style.width = pct + '%';
+            track.setAttribute('aria-valuenow', String(Math.round(pct)));
+        }
+        timeCur.textContent = fmt(audio.currentTime);
+    });
+    audio.addEventListener('loadedmetadata', function () {
+        timeDur.textContent = fmt(audio.duration);
+    });
+    audio.addEventListener('progress', function () {
+        try {
+            if (audio.buffered.length && audio.duration) {
+                bufferedBar.style.width = (audio.buffered.end(audio.buffered.length - 1) / audio.duration * 100) + '%';
+            }
+        } catch (e) {}
+    });
+    function seekFromEvent(clientX) {
+        var rect = track.getBoundingClientRect();
+        var ratio = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+        if (audio.duration) audio.currentTime = ratio * audio.duration;
+    }
+    track.addEventListener('click', function (e) { seekFromEvent(e.clientX); });
+    track.addEventListener('keydown', function (e) {
+        if (!audio.duration) return;
+        if (e.key === 'ArrowRight') { audio.currentTime = Math.min(audio.duration, audio.currentTime + 5); e.preventDefault(); }
+        if (e.key === 'ArrowLeft') { audio.currentTime = Math.max(0, audio.currentTime - 5); e.preventDefault(); }
+    });
+    document.getElementById('back15').addEventListener('click', function () {
+        audio.currentTime = Math.max(0, audio.currentTime - 15);
+    });
+    document.getElementById('fwd15').addEventListener('click', function () {
+        if (audio.duration) audio.currentTime = Math.min(audio.duration, audio.currentTime + 15);
+    });
+    speedBtn.addEventListener('click', function () {
+        speedIx = (speedIx + 1) % speeds.length;
+        audio.playbackRate = speeds[speedIx];
+        speedBtn.innerHTML = String(speeds[speedIx]).replace(/\.0$/, '') + '&times;';
+    });
+    function renderRows() {
+        rowsEl.innerHTML = '';
+        episodes.slice(0, 3).forEach(function (ep, i) {
+            var row = document.createElement('button');
+            row.type = 'button';
+            row.className = 'recent-row' + (i === 0 ? ' is-active' : '');
+            row.setAttribute('aria-label', 'Play ' + ep.title);
+            row.innerHTML =
+                '<span class="recent-play" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14"><path d="M4 2l9 6-9 6z" fill="currentColor"/></svg></span>' +
+                '<span class="recent-text"><span class="recent-title">' + escapeHtml(ep.title) + '</span>' +
+                '<span class="recent-meta">' + escapeHtml(ep.pubDateDisplay) + (ep.durationDisplay ? ' \u00B7 ' + escapeHtml(ep.durationDisplay) : '') + '</span></span>' +
+                (i === 0 ? '<span class="recent-tag">Latest</span>' : '');
+            row.addEventListener('click', function () { loadEpisode(i, true); });
+            rowsEl.appendChild(row);
+        });
+    }
+    function showError() {
+        titleEl.textContent = 'Episodes are on the way';
+        metaEl.textContent = '';
+        descEl.textContent = 'We couldn\u2019t reach the episode list just now \u2014 follow the show on Spotify or Apple Podcasts to listen.';
+    }
+    function init(data) {
+        episodes = (data && data.episodes) || [];
+        if (!episodes.length) { showError(); return; }
+        renderRows();
+        loadEpisode(0, false);
+    }
+    fetch('episodes.json', { cache: 'no-store' })
+        .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+        .then(init)
+        .catch(function () {
+            if (window.EPISODES && window.EPISODES.length) init({ episodes: window.EPISODES });
+            else showError();
+        });
+})();
