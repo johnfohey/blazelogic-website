@@ -1,17 +1,7 @@
 {
-  "updated": "2026-10-16T21:29:21Z",
+  "updated": "2026-10-16T21:00:00Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
-    {
-      "id": "ep-e37c5e65-0eb1-4b05-b9f9-a98d7b3fbafa",
-      "title": "Fairways & Side Bets — The $500 Driver vs. the $5 Golf Ball — October 16, 2026",
-      "pubDate": "2026-10-16",
-      "pubDateDisplay": "October 16, 2026",
-      "audioUrl": "https://muse.ai/podcasts/media/1443332972186099/8622ce19-ab25-4173-b717-f95d4dbe1e22/ep-e37c5e65-0eb1-4b05-b9f9-a98d7b3fbafa.mp3",
-      "duration": "296",
-      "durationDisplay": "4:56",
-      "description": "It's the Weekend Tee Box: Hye-Jin Choi survives a brutal Friday in Shanghai, storms scramble the leaderboard in India, and Alex and Jordan settle the weekend golfer's eternal question — would five hundred dollars help yo…"
-    },
     {
       "id": "ep-febc0aa4-c853-4fdf-b716-7a5ee6861e8d",
       "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — October 14, 2026",
