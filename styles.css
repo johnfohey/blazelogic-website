@@ -536,8 +536,8 @@ a { color: inherit; }
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(180deg, rgba(5,9,15,0.62) 0%, rgba(5,9,15,0.18) 32%, rgba(5,9,15,0.07) 58%, var(--bg) 100%),
-        linear-gradient(90deg, rgba(5,9,15,0.78) 0%, rgba(5,9,15,0.42) 46%, rgba(5,9,15,0.03) 78%);
+        linear-gradient(180deg, rgba(5,9,15,0.74) 0%, rgba(5,9,15,0.26) 34%, rgba(5,9,15,0.10) 60%, var(--bg) 100%),
+        linear-gradient(90deg, rgba(5,9,15,0.84) 0%, rgba(5,9,15,0.48) 48%, rgba(5,9,15,0.05) 80%);
 }
 .hero-cinematic .hero-content {
     position: relative;
@@ -641,7 +641,7 @@ a { color: inherit; }
     .hero-cinematic .hero-buttons { justify-content: center; }
     .hero-shade {
         background:
-            linear-gradient(180deg, rgba(5,9,15,0.68) 0%, rgba(5,9,15,0.30) 40%, rgba(5,9,15,0.14) 65%, var(--bg) 100%);
+            linear-gradient(180deg, rgba(5,9,15,0.80) 0%, rgba(5,9,15,0.44) 40%, rgba(5,9,15,0.22) 65%, var(--bg) 100%);
     }
 }
 @media (prefers-reduced-motion: reduce) {
