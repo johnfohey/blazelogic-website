@@ -21,6 +21,7 @@ Safety rules:
 import json
 import os
 import re
+import subprocess
 import sys
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -155,6 +156,13 @@ def main():
                 return 0
         except Exception as e:
             print(f"could not read existing {OUT_PATH}, will rewrite: {e}", file=sys.stderr)
+
+    try:
+        if os.path.isdir(".git") and os.path.isdir(AUDIO_DIR):
+            subprocess.run(["git", "add", AUDIO_DIR], check=False, timeout=60,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except Exception:
+        pass
 
     out = {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
