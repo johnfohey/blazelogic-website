@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-16T21:59:37Z",
+  "updated": "2026-10-17T01:00:29Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
     {
@@ -7,7 +7,7 @@
       "title": "Fairways & Side Bets — The $500 Driver vs. the $5 Golf Ball — October 16, 2026",
       "pubDate": "2026-10-16",
       "pubDateDisplay": "October 16, 2026",
-      "audioUrl": "https://muse.ai/podcasts/media/1443332972186099/8622ce19-ab25-4173-b717-f95d4dbe1e22/ep-e37c5e65-0eb1-4b05-b9f9-a98d7b3fbafa.mp3",
+      "audioUrl": "audio/ep-e37c5e65-0eb1-4b05-b9f9-a98d7b3fbafa.mp3",
       "duration": "296",
       "durationDisplay": "4:56",
       "description": "It's the Weekend Tee Box: Hye-Jin Choi survives a brutal Friday in Shanghai, storms scramble the leaderboard in India, and Alex and Jordan settle the weekend golfer's eternal question — would five hundred dollars help yo…"
@@ -17,7 +17,7 @@
       "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — October 14, 2026",
       "pubDate": "2026-10-14",
       "pubDateDisplay": "October 14, 2026",
-      "audioUrl": "https://muse.ai/podcasts/media/1443332972186099/8622ce19-ab25-4173-b717-f95d4dbe1e22/ep-febc0aa4-c853-4fdf-b716-7a5ee6861e8d.mp3",
+      "audioUrl": "audio/ep-febc0aa4-c853-4fdf-b716-7a5ee6861e8d.mp3",
       "duration": "287",
       "durationDisplay": "4:47",
       "description": "Alex and Jordan referee golf's three great arguments — gimmes, mulligans, and friendly wagers — with a primer on the Nassau and the one rule that ends every nineteenth-hole fight. AI Generated"
@@ -27,7 +27,7 @@
       "title": "Fairways & Side Bets — Weekend Golf Rundown — October 12, 2026",
       "pubDate": "2026-10-12",
       "pubDateDisplay": "October 12, 2026",
-      "audioUrl": "https://muse.ai/podcasts/media/1443332972186099/8622ce19-ab25-4173-b717-f95d4dbe1e22/ep-59847d8f-7c08-4cc0-9f4b-b0a415cb1010.mp3",
+      "audioUrl": "audio/ep-59847d8f-7c08-4cc0-9f4b-b0a415cb1010.mp3",
       "duration": "315",
       "durationDisplay": "5:15",
       "description": "Michael Brennan held on in Yokohama to win the Baycurrent Classic by one. Alex and Jordan break down the Sunday drama, the cruel psychology of the one-shot lead, and what it means for your Saturday game. AI Generated"
@@ -37,7 +37,7 @@
       "title": "Fairways & Side Bets — Welcome to the new show",
       "pubDate": "2026-10-10",
       "pubDateDisplay": "October 10, 2026",
-      "audioUrl": "https://muse.ai/podcasts/media/1443332972186099/8622ce19-ab25-4173-b717-f95d4dbe1e22/ep-66e270d0-0b38-49f9-9943-cc8ada4798ad.mp3",
+      "audioUrl": "audio/ep-66e270d0-0b38-49f9-9943-cc8ada4798ad.mp3",
       "duration": "70",
       "durationDisplay": "1:10",
       "description": "Meet Fairways & Side Bets by BlazeLogic — the golf-first show for everyday golfers. Alex and Jordan lay out the new weekly lineup: Weekend Golf Rundown on Mondays, Everyday Golfer on Wednesdays, and Weekend Tee Box on Fr…"
