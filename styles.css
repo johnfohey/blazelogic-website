@@ -336,7 +336,7 @@ a { color: inherit; }
 /* ===========================
    PODCAST
    =========================== */
-.podcast { padding: 90px 0; }
+.podcast { padding: 90px 0; background: radial-gradient(ellipse 90% 55% at 50% 0%, rgba(96,165,250,0.07), transparent 70%), var(--bg); }
 .podcast-grid {
     display: grid;
     grid-template-columns: 340px 1fr;
@@ -350,9 +350,14 @@ a { color: inherit; }
 }
 
 /* ===========================
+   BLAZE
+   =========================== */
+.blaze { padding: 90px 0; background: var(--bg-soft); }
+
+/* ===========================
    ABOUT
    =========================== */
-.about { padding: 90px 0; background: var(--bg-soft); }
+.about { padding: 90px 0; background: var(--bg); }
 .about .section-header { text-align: center; }
 .about-content { max-width: 700px; margin: 0 auto; }
 .about-tagline {
@@ -362,12 +367,13 @@ a { color: inherit; }
     margin-bottom: 18px;
 }
 .about-content p { color: var(--text-muted); margin-bottom: 16px; font-size: 1.05rem; }
+.about-content h2 { font-size: 1.35rem; font-weight: 700; color: var(--text); margin: 30px 0 12px; }
 .about-content strong { color: var(--text); }
 
 /* ===========================
    CONTACT
    =========================== */
-.contact { padding: 90px 0; }
+.contact { padding: 90px 0; background: var(--bg-soft); }
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1.25fr;
