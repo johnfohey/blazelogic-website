@@ -8,7 +8,7 @@
     var SUPABASE_URL = 'https://sidpospsmyxwpproykwq.supabase.co';
     // Public (publishable/anon) project key, the same one the app ships with.
     // It only grants the anon role; the database decides what that role may do.
-    var PUBLISHABLE_KEY = 'REPLACE_WITH_SUPABASE_PUBLISHABLE_KEY';
+    var PUBLISHABLE_KEY = 'sb_publishable_Db5e0dA0kA9KJ6JrD-BJzA_XYJsrZTD';
 
     var PRIVACY_EMAIL = 'privacy@blazelogic.io';
 
