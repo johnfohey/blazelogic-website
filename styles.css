@@ -372,6 +372,8 @@ a { color: inherit; }
 .about-content p { color: var(--text-muted); margin-bottom: 16px; font-size: 1.05rem; }
 .about-content h2 { font-size: 1.35rem; font-weight: 700; color: var(--text); margin: 30px 0 12px; }
 .about-content strong { color: var(--text); }
+.about-content .legal-list { color: var(--text-muted); margin: 0 0 16px 22px; font-size: 1.05rem; }
+.about-content .legal-list li { margin-bottom: 10px; }
 
 /* ===========================
    CONTACT
