@@ -1,7 +1,17 @@
 {
-  "updated": "2026-10-17T01:00:29Z",
+  "updated": "2026-10-19T19:53:14Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-705cef6c-ae07-4ef6-b407-ac4d21386dd9",
+      "title": "Fairways & Side Bets — Weekend Golf Rundown — October 19, 2026",
+      "pubDate": "2026-10-19",
+      "pubDateDisplay": "October 19, 2026",
+      "audioUrl": "audio/ep-705cef6c-ae07-4ef6-b407-ac4d21386dd9.mp3",
+      "duration": "295",
+      "durationDisplay": "4:55",
+      "description": "Ruoning Yin wins at home in Shanghai, Eugenio Chacarra survives a twenty-five-hole Sunday in India to take the Race to Dubai lead, and sixty-three-year-old Vijay Singh wins the SAS Championship season finale. Alex and Jo…"
+    },
     {
       "id": "ep-e37c5e65-0eb1-4b05-b9f9-a98d7b3fbafa",
       "title": "Fairways & Side Bets — The $500 Driver vs. the $5 Golf Ball — October 16, 2026",
@@ -31,16 +41,6 @@
       "duration": "315",
       "durationDisplay": "5:15",
       "description": "Michael Brennan held on in Yokohama to win the Baycurrent Classic by one. Alex and Jordan break down the Sunday drama, the cruel psychology of the one-shot lead, and what it means for your Saturday game. AI Generated"
-    },
-    {
-      "id": "ep-66e270d0-0b38-49f9-9943-cc8ada4798ad",
-      "title": "Fairways & Side Bets — Welcome to the new show",
-      "pubDate": "2026-10-10",
-      "pubDateDisplay": "October 10, 2026",
-      "audioUrl": "audio/ep-66e270d0-0b38-49f9-9943-cc8ada4798ad.mp3",
-      "duration": "70",
-      "durationDisplay": "1:10",
-      "description": "Meet Fairways & Side Bets by BlazeLogic — the golf-first show for everyday golfers. Alex and Jordan lay out the new weekly lineup: Weekend Golf Rundown on Mondays, Everyday Golfer on Wednesdays, and Weekend Tee Box on Fr…"
     }
   ]
 }
