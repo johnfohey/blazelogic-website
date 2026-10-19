@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https://sidpospsmyxwpproykwq.supabase.co; form-action 'none'; base-uri 'none'">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex">
+    <meta name="description" content="Delete your Golf Bets data with a Deletion Code from the app.">
+    <meta name="theme-color" content="#0B0F14">
+
+    <title>Delete Your Golf Bets Data — BlazeLogic</title>
+
+    <link rel="icon" type="image/png" href="brand/flaming-b.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="delete.css">
+</head>
+<body>
+<nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <img src="brand/flaming-b.png" alt="BlazeLogic" class="nav-logo">
+                <span class="nav-wordmark">BlazeLogic</span>
+            </a>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html#apps" class="nav-link">Golf Apps</a></li>
+                <li><a href="index.html#podcast" class="nav-link">Podcast</a></li>
+                <li><a href="index.html#blaze" class="nav-link">Blaze</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+<main>
+    <section class="about legal-page">
+        <div class="container about-content">
+            <p class="eyebrow">Privacy</p>
+            <h1>Delete your Golf Bets data</h1>
+            <p>
+                The quickest way is in the app: on the Home screen tap the gear icon, then
+                <strong>Privacy &amp; Data &rarr; Delete My Data</strong>.
+            </p>
+            <p>
+                Can't use the app right now? In Golf Bets, tap the gear icon, then
+                <strong>Privacy &amp; Data &rarr; Get Deletion Code</strong>, and enter that code below.
+                A code works once and expires 24 hours after you create it. Getting a new code cancels the old one.
+            </p>
+
+            <form class="contact-form deletion-form" id="deletionForm" novalidate>
+                <div class="form-group">
+                    <label for="deletionCode">Deletion Code</label>
+                    <input type="text" id="deletionCode" name="deletionCode" required
+                           autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false"
+                           maxlength="40" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX">
+                </div>
+                <button type="submit" class="btn btn-primary" id="deletionSubmit"><span>Delete My Data</span></button>
+                <p class="form-note" id="deletionNote" role="status" aria-live="polite">
+                    This permanently deletes your players, rounds, scores, presses, settlements, history and stats. It can't be undone.
+                </p>
+            </form>
+
+            <h2>No code, or lost your phone?</h2>
+            <p>
+                Golf Bets uses an anonymous account that isn't linked to your email or phone number,
+                so a Deletion Code from the app is how we confirm a request comes from you. If you can't
+                get a code, email <a href="mailto:privacy@blazelogic.io" class="email-link">privacy@blazelogic.io</a>
+                and tell us what you can about your data (for example, player names and roughly when you played).
+                We'll delete data we can verify within 30 days.
+            </p>
+            <p>
+                Deleting the app from your phone doesn't delete your data on our servers. Use the steps above first.
+            </p>
+            <p>
+                See our <a href="privacy.html" class="email-link">Privacy Policy</a> for more.
+            </p>
+        </div>
+    </section>
+</main>
+<footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <span class="footer-brandmark">
+                    <img src="brand/flaming-b.png" alt="BlazeLogic" class="footer-logo">
+                    <span class="footer-wordmark">BlazeLogic</span>
+                </span>
+                <p>&copy; 2026 BlazeLogic LLC. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.instagram.com/blazelogic" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+                <a href="https://open.spotify.com/show/7Cn10TTwwopSbtUK8Dka5X" target="_blank" rel="noopener" class="footer-link">Podcast</a>
+                <a href="mailto:privacy@blazelogic.io" class="footer-link">Email</a>
+                <a href="privacy.html" class="footer-link">Privacy</a>
+                <a href="terms.html" class="footer-link">Terms</a>
+            </div>
+        </div>
+    </footer>
+<script src="delete.js"></script>
+</body>
+</html>

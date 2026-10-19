@@ -1,0 +1,7 @@
+/* Golf Bets data deletion page (delete.html). Kept separate so the page can run under a strict CSP. */
+.legal-page { padding-top: 140px; }
+.deletion-form { margin: 28px 0 8px; }
+.deletion-form input { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 0.04em; text-transform: uppercase; }
+.deletion-form input::placeholder { text-transform: none; letter-spacing: normal; }
+.deletion-form button[disabled] { opacity: 0.6; cursor: not-allowed; }
+.deletion-form .form-note strong { color: var(--text); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
