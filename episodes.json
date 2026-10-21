@@ -1,7 +1,17 @@
 {
-  "updated": "2026-10-19T19:53:14Z",
+  "updated": "2026-10-21T18:35:04Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-05f67220-24b7-445a-b631-7a98902fc9ec",
+      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — October 21, 2026",
+      "pubDate": "2026-10-21",
+      "pubDateDisplay": "October 21, 2026",
+      "audioUrl": "audio/ep-05f67220-24b7-445a-b631-7a98902fc9ec.mp3",
+      "duration": "288",
+      "durationDisplay": "4:48",
+      "description": "Alex and Jordan strip the confusion out of golf's most popular bet — the three Nassau wagers, how presses really work, and the single most misunderstood phrase in casual golf. Plus the ten-second habit that ends every ni…"
+    },
     {
       "id": "ep-705cef6c-ae07-4ef6-b407-ac4d21386dd9",
       "title": "Fairways & Side Bets — Weekend Golf Rundown — October 19, 2026",
@@ -31,16 +41,6 @@
       "duration": "287",
       "durationDisplay": "4:47",
       "description": "Alex and Jordan referee golf's three great arguments — gimmes, mulligans, and friendly wagers — with a primer on the Nassau and the one rule that ends every nineteenth-hole fight. AI Generated"
-    },
-    {
-      "id": "ep-59847d8f-7c08-4cc0-9f4b-b0a415cb1010",
-      "title": "Fairways & Side Bets — Weekend Golf Rundown — October 12, 2026",
-      "pubDate": "2026-10-12",
-      "pubDateDisplay": "October 12, 2026",
-      "audioUrl": "audio/ep-59847d8f-7c08-4cc0-9f4b-b0a415cb1010.mp3",
-      "duration": "315",
-      "durationDisplay": "5:15",
-      "description": "Michael Brennan held on in Yokohama to win the Baycurrent Classic by one. Alex and Jordan break down the Sunday drama, the cruel psychology of the one-shot lead, and what it means for your Saturday game. AI Generated"
     }
   ]
 }
