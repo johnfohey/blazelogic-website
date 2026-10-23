@@ -1,7 +1,17 @@
 {
-  "updated": "2026-10-21T18:35:04Z",
+  "updated": "2026-10-23T18:16:41Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-7f55efd8-6a34-4a94-a813-cd6b7fa41ec2",
+      "title": "Fairways & Side Bets — Weekend Tee Box — October 23, 2026",
+      "pubDate": "2026-10-23",
+      "pubDateDisplay": "October 23, 2026",
+      "audioUrl": "audio/ep-7f55efd8-6a34-4a94-a813-cd6b7fa41ec2.mp3",
+      "duration": "270",
+      "durationDisplay": "4:30",
+      "description": "Three tours, three courses, one golf weekend: a rookie leads in Bermuda playing for his job, two first-time winners hunt at the BMW Ladies, and the Race to Dubai heats up in Korea. Plus the Saturday game to try and a che…"
+    },
     {
       "id": "ep-05f67220-24b7-445a-b631-7a98902fc9ec",
       "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — October 21, 2026",
@@ -31,16 +41,6 @@
       "duration": "296",
       "durationDisplay": "4:56",
       "description": "It's the Weekend Tee Box: Hye-Jin Choi survives a brutal Friday in Shanghai, storms scramble the leaderboard in India, and Alex and Jordan settle the weekend golfer's eternal question — would five hundred dollars help yo…"
-    },
-    {
-      "id": "ep-febc0aa4-c853-4fdf-b716-7a5ee6861e8d",
-      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — October 14, 2026",
-      "pubDate": "2026-10-14",
-      "pubDateDisplay": "October 14, 2026",
-      "audioUrl": "audio/ep-febc0aa4-c853-4fdf-b716-7a5ee6861e8d.mp3",
-      "duration": "287",
-      "durationDisplay": "4:47",
-      "description": "Alex and Jordan referee golf's three great arguments — gimmes, mulligans, and friendly wagers — with a primer on the Nassau and the one rule that ends every nineteenth-hole fight. AI Generated"
     }
   ]
 }
