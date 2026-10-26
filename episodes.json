@@ -1,7 +1,17 @@
 {
-  "updated": "2026-10-23T18:16:41Z",
+  "updated": "2026-10-26T19:54:24Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-541a5f55-1a5e-4bfe-b09e-742019a2a493",
+      "title": "Fairways & Side Bets — Weekend Golf Rundown — October 26, 2026",
+      "pubDate": "2026-10-26",
+      "pubDateDisplay": "October 26, 2026",
+      "audioUrl": "audio/ep-541a5f55-1a5e-4bfe-b09e-742019a2a493.mp3",
+      "duration": "293",
+      "durationDisplay": "4:53",
+      "description": "Two trophies decided in Korea and one finish still waiting in Bermuda: Yuri Yoshida and Yuto Katsuragawa close the deal, while Seamus Power and Austin Smotherman head to a Monday playoff. Plus what everyday golfers can c…"
+    },
     {
       "id": "ep-7f55efd8-6a34-4a94-a813-cd6b7fa41ec2",
       "title": "Fairways & Side Bets — Weekend Tee Box — October 23, 2026",
@@ -31,16 +41,6 @@
       "duration": "295",
       "durationDisplay": "4:55",
       "description": "Ruoning Yin wins at home in Shanghai, Eugenio Chacarra survives a twenty-five-hole Sunday in India to take the Race to Dubai lead, and sixty-three-year-old Vijay Singh wins the SAS Championship season finale. Alex and Jo…"
-    },
-    {
-      "id": "ep-e37c5e65-0eb1-4b05-b9f9-a98d7b3fbafa",
-      "title": "Fairways & Side Bets — The $500 Driver vs. the $5 Golf Ball — October 16, 2026",
-      "pubDate": "2026-10-16",
-      "pubDateDisplay": "October 16, 2026",
-      "audioUrl": "audio/ep-e37c5e65-0eb1-4b05-b9f9-a98d7b3fbafa.mp3",
-      "duration": "296",
-      "durationDisplay": "4:56",
-      "description": "It's the Weekend Tee Box: Hye-Jin Choi survives a brutal Friday in Shanghai, storms scramble the leaderboard in India, and Alex and Jordan settle the weekend golfer's eternal question — would five hundred dollars help yo…"
     }
   ]
 }
