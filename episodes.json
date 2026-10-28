@@ -1,7 +1,17 @@
 {
-  "updated": "2026-10-26T19:54:24Z",
+  "updated": "2026-10-28T19:30:50Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-2c227850-6f3d-43a5-9657-20d1dd151e03",
+      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — October 28, 2026",
+      "pubDate": "2026-10-28",
+      "pubDateDisplay": "October 28, 2026",
+      "audioUrl": "audio/ep-2c227850-6f3d-43a5-9657-20d1dd151e03.mp3",
+      "duration": "279",
+      "durationDisplay": "4:39",
+      "description": "Alex and Jordan explain ready golf the right way: cut the waiting around the shot, not the swing itself, with the Rules of Golf pace guidance and the key stroke-play versus match-play distinction. AI Generated"
+    },
     {
       "id": "ep-541a5f55-1a5e-4bfe-b09e-742019a2a493",
       "title": "Fairways & Side Bets — Weekend Golf Rundown — October 26, 2026",
@@ -31,16 +41,6 @@
       "duration": "288",
       "durationDisplay": "4:48",
       "description": "Alex and Jordan strip the confusion out of golf's most popular bet — the three Nassau wagers, how presses really work, and the single most misunderstood phrase in casual golf. Plus the ten-second habit that ends every ni…"
-    },
-    {
-      "id": "ep-705cef6c-ae07-4ef6-b407-ac4d21386dd9",
-      "title": "Fairways & Side Bets — Weekend Golf Rundown — October 19, 2026",
-      "pubDate": "2026-10-19",
-      "pubDateDisplay": "October 19, 2026",
-      "audioUrl": "audio/ep-705cef6c-ae07-4ef6-b407-ac4d21386dd9.mp3",
-      "duration": "295",
-      "durationDisplay": "4:55",
-      "description": "Ruoning Yin wins at home in Shanghai, Eugenio Chacarra survives a twenty-five-hole Sunday in India to take the Race to Dubai lead, and sixty-three-year-old Vijay Singh wins the SAS Championship season finale. Alex and Jo…"
     }
   ]
 }
