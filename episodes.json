@@ -1,7 +1,17 @@
 {
-  "updated": "2026-10-28T19:30:50Z",
+  "updated": "2026-10-30T19:18:02Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-8b942fc3-8e6a-48c2-ad83-73134aacc017",
+      "title": "Fairways & Side Bets — Weekend Tee Box — October 30, 2026",
+      "pubDate": "2026-10-30",
+      "pubDateDisplay": "October 30, 2026",
+      "audioUrl": "audio/ep-8b942fc3-8e6a-48c2-ad83-73134aacc017.mp3",
+      "duration": "279",
+      "durationDisplay": "4:39",
+      "description": "Alex and Jordan preview the weekend in Mexico and Malaysia after Thursday opening rounds, explain four-ball for your Saturday round, and share one no-cost gear tip for the bag you already own. AI Generated"
+    },
     {
       "id": "ep-2c227850-6f3d-43a5-9657-20d1dd151e03",
       "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — October 28, 2026",
@@ -31,16 +41,6 @@
       "duration": "270",
       "durationDisplay": "4:30",
       "description": "Three tours, three courses, one golf weekend: a rookie leads in Bermuda playing for his job, two first-time winners hunt at the BMW Ladies, and the Race to Dubai heats up in Korea. Plus the Saturday game to try and a che…"
-    },
-    {
-      "id": "ep-05f67220-24b7-445a-b631-7a98902fc9ec",
-      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — October 21, 2026",
-      "pubDate": "2026-10-21",
-      "pubDateDisplay": "October 21, 2026",
-      "audioUrl": "audio/ep-05f67220-24b7-445a-b631-7a98902fc9ec.mp3",
-      "duration": "288",
-      "durationDisplay": "4:48",
-      "description": "Alex and Jordan strip the confusion out of golf's most popular bet — the three Nassau wagers, how presses really work, and the single most misunderstood phrase in casual golf. Plus the ten-second habit that ends every ni…"
     }
   ]
 }
