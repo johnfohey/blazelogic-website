@@ -1,7 +1,17 @@
 {
-  "updated": "2026-10-30T19:18:02Z",
+  "updated": "2026-11-02T22:45:48Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-0c814bae-a799-4118-99d0-7caaf5be0d9e",
+      "title": "Fairways & Side Bets — Weekend Golf Rundown — November 2, 2026",
+      "pubDate": "2026-11-02",
+      "pubDateDisplay": "November 2, 2026",
+      "audioUrl": "audio/ep-0c814bae-a799-4118-99d0-7caaf5be0d9e.mp3",
+      "duration": "292",
+      "durationDisplay": "4:52",
+      "description": "Alex and Jordan recap the weekend: Andrew Novak's five-shot win at the VidantaWorld Mexico Open and Miyu Yamashita's successful title defense at the Maybank Championship, plus one lesson for everyday golfers on sticking …"
+    },
     {
       "id": "ep-8b942fc3-8e6a-48c2-ad83-73134aacc017",
       "title": "Fairways & Side Bets — Weekend Tee Box — October 30, 2026",
@@ -31,16 +41,6 @@
       "duration": "293",
       "durationDisplay": "4:53",
       "description": "Two trophies decided in Korea and one finish still waiting in Bermuda: Yuri Yoshida and Yuto Katsuragawa close the deal, while Seamus Power and Austin Smotherman head to a Monday playoff. Plus what everyday golfers can c…"
-    },
-    {
-      "id": "ep-7f55efd8-6a34-4a94-a813-cd6b7fa41ec2",
-      "title": "Fairways & Side Bets — Weekend Tee Box — October 23, 2026",
-      "pubDate": "2026-10-23",
-      "pubDateDisplay": "October 23, 2026",
-      "audioUrl": "audio/ep-7f55efd8-6a34-4a94-a813-cd6b7fa41ec2.mp3",
-      "duration": "270",
-      "durationDisplay": "4:30",
-      "description": "Three tours, three courses, one golf weekend: a rookie leads in Bermuda playing for his job, two first-time winners hunt at the BMW Ladies, and the Race to Dubai heats up in Korea. Plus the Saturday game to try and a che…"
     }
   ]
 }
