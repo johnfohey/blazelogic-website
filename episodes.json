@@ -1,7 +1,17 @@
 {
-  "updated": "2026-11-02T22:45:48Z",
+  "updated": "2026-11-04T20:47:58Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-1a564c8f-b262-4fcd-9365-9438b9960c34",
+      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 4, 2026",
+      "pubDate": "2026-11-04",
+      "pubDateDisplay": "November 4, 2026",
+      "audioUrl": "audio/ep-1a564c8f-b262-4fcd-9365-9438b9960c34.mp3",
+      "duration": "275",
+      "durationDisplay": "4:35",
+      "description": "Alex and Jordan explain the lost ball and provisional ball rules: the three-minute search, why you must say the word provisional before hitting, and when the provisional becomes your ball in play. AI Generated"
+    },
     {
       "id": "ep-0c814bae-a799-4118-99d0-7caaf5be0d9e",
       "title": "Fairways & Side Bets — Weekend Golf Rundown — November 2, 2026",
@@ -31,16 +41,6 @@
       "duration": "279",
       "durationDisplay": "4:39",
       "description": "Alex and Jordan explain ready golf the right way: cut the waiting around the shot, not the swing itself, with the Rules of Golf pace guidance and the key stroke-play versus match-play distinction. AI Generated"
-    },
-    {
-      "id": "ep-541a5f55-1a5e-4bfe-b09e-742019a2a493",
-      "title": "Fairways & Side Bets — Weekend Golf Rundown — October 26, 2026",
-      "pubDate": "2026-10-26",
-      "pubDateDisplay": "October 26, 2026",
-      "audioUrl": "audio/ep-541a5f55-1a5e-4bfe-b09e-742019a2a493.mp3",
-      "duration": "293",
-      "durationDisplay": "4:53",
-      "description": "Two trophies decided in Korea and one finish still waiting in Bermuda: Yuri Yoshida and Yuto Katsuragawa close the deal, while Seamus Power and Austin Smotherman head to a Monday playoff. Plus what everyday golfers can c…"
     }
   ]
 }
