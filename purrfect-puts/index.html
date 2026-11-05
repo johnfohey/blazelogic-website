@@ -222,7 +222,7 @@ function loadImage(key, src) {
 }
 loadImage("title", "assets/title.jpg");
 loadImage("hub", "assets/hub.png");
-loadImage("blaze", "assets/blaze.jpg");
+loadImage("blaze", "assets/hole1.png");
 HOLES.forEach((h, i) => loadImage("hole" + (i + 1), "assets/" + h.surface));
 
 /* ============ Audio: synthesized WebAudio, mute toggle ============ */
@@ -663,7 +663,7 @@ function drawCourse(t) {
   }
   // Bumpers: blue yarn balls
   (h.bumpers || []).forEach(b => drawYarnBall(b[0], b[1], BUMPER_R));
-  // Blaze hazard: approved Blaze portrait in a gold medallion + dashed swat ring
+  // Blaze hazard: title-card cat portrait in a gold medallion + dashed swat ring (John's supplied art)
   if (h.blaze) {
     ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, h.blaze.swatR, 0, Math.PI * 2);
     ctx.setLineDash([6, 8]); ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,80,60,.85)"; ctx.stroke();
