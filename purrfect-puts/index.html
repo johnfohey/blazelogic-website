@@ -222,6 +222,7 @@ function loadImage(key, src) {
 }
 loadImage("title", "assets/title.jpg");
 loadImage("hub", "assets/hub.png");
+loadImage("blaze", "assets/blaze.jpg");
 HOLES.forEach((h, i) => loadImage("hole" + (i + 1), "assets/" + h.surface));
 
 /* ============ Audio: synthesized WebAudio, mute toggle ============ */
@@ -662,17 +663,28 @@ function drawCourse(t) {
   }
   // Bumpers: blue yarn balls
   (h.bumpers || []).forEach(b => drawYarnBall(b[0], b[1], BUMPER_R));
-  // Blaze hazard: gold medallion marker + dashed swat ring (no redrawn mascot art)
+  // Blaze hazard: approved Blaze portrait in a gold medallion + dashed swat ring
   if (h.blaze) {
     ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, h.blaze.swatR, 0, Math.PI * 2);
     ctx.setLineDash([6, 8]); ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,80,60,.85)"; ctx.stroke();
     ctx.setLineDash([]);
-    ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, 20, 0, Math.PI * 2);
-    ctx.fillStyle = "#ffd166"; ctx.fill();
-    ctx.lineWidth = 3; ctx.strokeStyle = "#8a6d00"; ctx.stroke();
-    ctx.fillStyle = "#1a1207"; ctx.font = "900 11px system-ui"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillText("BLAZE", h.blaze.x, h.blaze.y);
-    ctx.textBaseline = "alphabetic";
+    const bi = IMAGES.blaze;
+    if (bi) {
+      ctx.save();
+      ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, 20, 0, Math.PI * 2); ctx.clip();
+      const s = Math.max(40 / bi.width, 40 / bi.height);
+      ctx.drawImage(bi, h.blaze.x - bi.width * s / 2, h.blaze.y - bi.height * s / 2, bi.width * s, bi.height * s);
+      ctx.restore();
+      ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, 20, 0, Math.PI * 2);
+      ctx.lineWidth = 3; ctx.strokeStyle = "#ffd166"; ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, 20, 0, Math.PI * 2);
+      ctx.fillStyle = "#ffd166"; ctx.fill();
+      ctx.lineWidth = 3; ctx.strokeStyle = "#8a6d00"; ctx.stroke();
+      ctx.fillStyle = "#1a1207"; ctx.font = "900 11px system-ui"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("BLAZE", h.blaze.x, h.blaze.y);
+      ctx.textBaseline = "alphabetic";
+    }
   }
   // Cup + flag
   ctx.beginPath(); ctx.arc(h.cup[0], h.cup[1], CUP_R, 0, Math.PI * 2);
