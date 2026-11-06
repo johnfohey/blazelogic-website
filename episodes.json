@@ -1,7 +1,17 @@
 {
-  "updated": "2026-11-04T20:47:58Z",
+  "updated": "2026-11-06T20:25:51Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-548da12f-ea34-42ff-b9ed-5165c543e77f",
+      "title": "Fairways & Side Bets — Weekend Tee Box — November 6, 2026",
+      "pubDate": "2026-11-06",
+      "pubDateDisplay": "November 6, 2026",
+      "audioUrl": "audio/ep-548da12f-ea34-42ff-b9ed-5165c543e77f.mp3",
+      "duration": "349",
+      "durationDisplay": "5:49",
+      "description": "Alex and Jordan preview the weekend: Chris Kirk's bogey-free 63 leads in Los Cabos, a three-way Japanese tie tops the TOTO Japan Classic, plus foursomes to try Saturday and a free grip-cleaning tip. AI Generated"
+    },
     {
       "id": "ep-1a564c8f-b262-4fcd-9365-9438b9960c34",
       "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 4, 2026",
@@ -31,16 +41,6 @@
       "duration": "279",
       "durationDisplay": "4:39",
       "description": "Alex and Jordan preview the weekend in Mexico and Malaysia after Thursday opening rounds, explain four-ball for your Saturday round, and share one no-cost gear tip for the bag you already own. AI Generated"
-    },
-    {
-      "id": "ep-2c227850-6f3d-43a5-9657-20d1dd151e03",
-      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — October 28, 2026",
-      "pubDate": "2026-10-28",
-      "pubDateDisplay": "October 28, 2026",
-      "audioUrl": "audio/ep-2c227850-6f3d-43a5-9657-20d1dd151e03.mp3",
-      "duration": "279",
-      "durationDisplay": "4:39",
-      "description": "Alex and Jordan explain ready golf the right way: cut the waiting around the shot, not the swing itself, with the Rules of Golf pace guidance and the key stroke-play versus match-play distinction. AI Generated"
     }
   ]
 }
