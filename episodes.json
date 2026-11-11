@@ -1,7 +1,17 @@
 {
-  "updated": "2026-11-09T23:25:08Z",
+  "updated": "2026-11-11T21:21:33Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-bae7986a-56dd-40bb-a111-8f95594cb87b",
+      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 11, 2026",
+      "pubDate": "2026-11-11",
+      "pubDateDisplay": "November 11, 2026",
+      "audioUrl": "audio/ep-bae7986a-56dd-40bb-a111-8f95594cb87b.mp3",
+      "duration": "305",
+      "durationDisplay": "5:05",
+      "description": "Alex and Jordan explain how cold weather steals your yardage — about two yards a club for every ten degrees — and share practical fixes: warm balls, layered clothing, a longer warm-up, and when preferred lies apply. AI G…"
+    },
     {
       "id": "ep-ac7d5ca4-f848-44f3-be07-c57163a9f893",
       "title": "Fairways & Side Bets — Weekend Golf Rundown — November 9, 2026",
@@ -31,16 +41,6 @@
       "duration": "275",
       "durationDisplay": "4:35",
       "description": "Alex and Jordan explain the lost ball and provisional ball rules: the three-minute search, why you must say the word provisional before hitting, and when the provisional becomes your ball in play. AI Generated"
-    },
-    {
-      "id": "ep-0c814bae-a799-4118-99d0-7caaf5be0d9e",
-      "title": "Fairways & Side Bets — Weekend Golf Rundown — November 2, 2026",
-      "pubDate": "2026-11-02",
-      "pubDateDisplay": "November 2, 2026",
-      "audioUrl": "audio/ep-0c814bae-a799-4118-99d0-7caaf5be0d9e.mp3",
-      "duration": "292",
-      "durationDisplay": "4:52",
-      "description": "Alex and Jordan recap the weekend: Andrew Novak's five-shot win at the VidantaWorld Mexico Open and Miyu Yamashita's successful title defense at the Maybank Championship, plus one lesson for everyday golfers on sticking …"
     }
   ]
 }
