@@ -1,7 +1,17 @@
 {
-  "updated": "2026-11-11T21:21:33Z",
+  "updated": "2026-11-13T20:53:04Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-3238569f-eceb-4895-90bc-9574dc121909",
+      "title": "Fairways & Side Bets — Weekend Tee Box — November 13, 2026",
+      "pubDate": "2026-11-13",
+      "pubDateDisplay": "November 13, 2026",
+      "audioUrl": "audio/ep-3238569f-eceb-4895-90bc-9574dc121909.mp3",
+      "duration": "272",
+      "durationDisplay": "4:32",
+      "description": "Alex and Jordan preview a red-hot weekend: Trace Crowe leads the Austin Championship after a record 62, and two 61s top the board at The Annika — plus a Stableford game to try Saturday and a free groove-cleaning fix. AI …"
+    },
     {
       "id": "ep-bae7986a-56dd-40bb-a111-8f95594cb87b",
       "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 11, 2026",
@@ -31,16 +41,6 @@
       "duration": "349",
       "durationDisplay": "5:49",
       "description": "Alex and Jordan preview the weekend: Chris Kirk's bogey-free 63 leads in Los Cabos, a three-way Japanese tie tops the TOTO Japan Classic, plus foursomes to try Saturday and a free grip-cleaning tip. AI Generated"
-    },
-    {
-      "id": "ep-1a564c8f-b262-4fcd-9365-9438b9960c34",
-      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 4, 2026",
-      "pubDate": "2026-11-04",
-      "pubDateDisplay": "November 4, 2026",
-      "audioUrl": "audio/ep-1a564c8f-b262-4fcd-9365-9438b9960c34.mp3",
-      "duration": "275",
-      "durationDisplay": "4:35",
-      "description": "Alex and Jordan explain the lost ball and provisional ball rules: the three-minute search, why you must say the word provisional before hitting, and when the provisional becomes your ball in play. AI Generated"
     }
   ]
 }
