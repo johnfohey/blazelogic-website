@@ -1,7 +1,17 @@
 {
-  "updated": "2026-11-13T20:53:04Z",
+  "updated": "2026-11-16T23:22:22Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-b2cf4a53-e451-4054-95cc-a1344e25ad54",
+      "title": "Fairways & Side Bets — Weekend Golf Rundown — November 16, 2026",
+      "pubDate": "2026-11-16",
+      "pubDateDisplay": "November 16, 2026",
+      "audioUrl": "audio/ep-b2cf4a53-e451-4054-95cc-a1344e25ad54.mp3",
+      "duration": "282",
+      "durationDisplay": "4:42",
+      "description": "Alex and Jordan recap a weekend of firsts and finales: Lindy Duncan wins her first LPGA title in her 222nd start, Tyrrell Hatton takes Dubai while Rory McIlroy clinches a record-tying eighth Race to Dubai title, and the …"
+    },
     {
       "id": "ep-3238569f-eceb-4895-90bc-9574dc121909",
       "title": "Fairways & Side Bets — Weekend Tee Box — November 13, 2026",
@@ -31,16 +41,6 @@
       "duration": "267",
       "durationDisplay": "4:27",
       "description": "Alex and Jordan recap the weekend: 19-year-old Blades Brown makes history in Los Cabos with a closing 63 and playoff win, and Shuri Sakuma breaks through for her first LPGA title in Japan — plus what everyday golfers can…"
-    },
-    {
-      "id": "ep-548da12f-ea34-42ff-b9ed-5165c543e77f",
-      "title": "Fairways & Side Bets — Weekend Tee Box — November 6, 2026",
-      "pubDate": "2026-11-06",
-      "pubDateDisplay": "November 6, 2026",
-      "audioUrl": "audio/ep-548da12f-ea34-42ff-b9ed-5165c543e77f.mp3",
-      "duration": "349",
-      "durationDisplay": "5:49",
-      "description": "Alex and Jordan preview the weekend: Chris Kirk's bogey-free 63 leads in Los Cabos, a three-way Japanese tie tops the TOTO Japan Classic, plus foursomes to try Saturday and a free grip-cleaning tip. AI Generated"
     }
   ]
 }
