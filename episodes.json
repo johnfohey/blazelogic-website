@@ -1,7 +1,17 @@
 {
-  "updated": "2026-11-16T23:22:22Z",
+  "updated": "2026-11-18T21:53:25Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-997e6324-f6f9-48d7-a869-41e97ab3d1b3",
+      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 18, 2026",
+      "pubDate": "2026-11-18",
+      "pubDateDisplay": "November 18, 2026",
+      "audioUrl": "audio/ep-997e6324-f6f9-48d7-a869-41e97ab3d1b3.mp3",
+      "duration": "259",
+      "durationDisplay": "4:19",
+      "description": "Alex and Jordan explain red and yellow penalty areas, out of bounds, and when a provisional ball is — and is not — the right call, so you know your relief before you drop. AI Generated"
+    },
     {
       "id": "ep-b2cf4a53-e451-4054-95cc-a1344e25ad54",
       "title": "Fairways & Side Bets — Weekend Golf Rundown — November 16, 2026",
@@ -31,16 +41,6 @@
       "duration": "305",
       "durationDisplay": "5:05",
       "description": "Alex and Jordan explain how cold weather steals your yardage — about two yards a club for every ten degrees — and share practical fixes: warm balls, layered clothing, a longer warm-up, and when preferred lies apply. AI G…"
-    },
-    {
-      "id": "ep-ac7d5ca4-f848-44f3-be07-c57163a9f893",
-      "title": "Fairways & Side Bets — Weekend Golf Rundown — November 9, 2026",
-      "pubDate": "2026-11-09",
-      "pubDateDisplay": "November 9, 2026",
-      "audioUrl": "audio/ep-ac7d5ca4-f848-44f3-be07-c57163a9f893.mp3",
-      "duration": "267",
-      "durationDisplay": "4:27",
-      "description": "Alex and Jordan recap the weekend: 19-year-old Blades Brown makes history in Los Cabos with a closing 63 and playoff win, and Shuri Sakuma breaks through for her first LPGA title in Japan — plus what everyday golfers can…"
     }
   ]
 }
