@@ -4,6 +4,34 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Purrfect Puts with Blaze</title>
+<!--
+  Purrfect Puts with Blaze — v2 (3D-style rebuild)
+  Inspired by (not a copy of) Mini Golf 1000: Putt Putt Star — behind-the-ball
+  perspective, pull-back-to-shoot with an aim cone, stars by putt count,
+  redo tickets, pause, and a whole-hole overview toggle.
+  Original game, art, and identity: BlazeLogic.
+  Holes redesigned v2.1: every hole has its own layout and obstacles —
+  ramps and raised plateaus (real elevation: the ball climbs, rolls back
+  down, and launches off edges), a vertical rollercoaster loop the ball
+  visibly travels through, a bridge over water, a kicker jump over a
+  water gap, a spiral, a split path with a risky shortcut, a tunnel,
+  moving and pinball bumpers, banked turns, and a downhill speed run.
+  Holes hardened v2.2 (John: 1, 2, 3, 4, 8, 9 too easy): pinball guards on
+  the straight lines of H1/H4/H8, loop moved left + gap wall on H2,
+  bridge shifted east on H3, narrower plateau (90..310) + wider water +
+  center pinball + gentler 24-high slope on H9 (36 stalled diagonal
+  climbs and trapped the ball — verified by search). H5/H6/H7 untouched
+  as the difficulty benchmark. H1 plateau narrowed to 140..260 to kill
+  a banked ace; H8 tunnel mouth narrowed 165..235 to 185..215 (two
+  guard pinballs tried first — the funnel walls deflect banked shots
+  around them — so the mouth itself is the guard now).
+  Preserved from v1: 9 holes in John's poster order, par 32 (3,3,4,3,4,4,4,3,4),
+  hole 9 Blaze hazard (a sunk ball is never swatted out), scorecard,
+  initials + Save score, Top Putters leaderboard on the separate
+  'purrfect-puts' Supabase project.
+  Stars: <= par = 3, par+1 = 2, par+2 = 1, par+3 = 0 (sunk), par+4 = fail.
+  Redos: 3 per round. One file, no build step, no server beyond Supabase.
+-->
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body {
@@ -29,6 +57,7 @@
     background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,.28) 45%, rgba(0,0,0,0) 70%);
   }
   .screen.hidden { display: none; }
+  .screen.center { justify-content: center; background: rgba(0,0,0,.55); }
   .btn {
     appearance: none; border: 0; border-radius: 999px; cursor: pointer;
     padding: 14px 30px; font-size: 19px; font-weight: 800; letter-spacing: .3px;
@@ -49,18 +78,39 @@
   .panel .empty { font-size: 14px; opacity: .8; }
   #hud {
     position: absolute; top: 0; left: 0; right: 0; display: flex;
-    justify-content: space-between; align-items: center; gap: 8px;
-    padding: 10px 12px calc(10px + 0px);
+    flex-direction: column; gap: 4px;
+    padding: 10px 12px 6px;
     padding-top: calc(10px + env(safe-area-inset-top));
-    font-weight: 700; font-size: 15px; text-shadow: 0 1px 3px rgba(0,0,0,.8);
+    font-weight: 700; font-size: 14px; text-shadow: 0 1px 3px rgba(0,0,0,.8);
     pointer-events: none;
   }
   #hud.hidden { display: none; }
   #hud button { pointer-events: auto; }
-  #muteBtn {
+  .hudrow { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .hudrow .dim { opacity: .85; font-size: 12.5px; font-weight: 600; }
+  .hbtns { display: flex; gap: 6px; }
+  .hbtn {
     appearance: none; border: 1px solid rgba(255,255,255,.4); background: rgba(0,0,0,.35);
-    color: #fff; border-radius: 999px; padding: 6px 12px; font-size: 14px; font-weight: 700; cursor: pointer;
+    color: #fff; border-radius: 999px; padding: 6px 10px; font-size: 14px; font-weight: 700; cursor: pointer;
+    min-width: 38px;
   }
+  .hbtn.active { background: rgba(255, 183, 3, .85); color: #1a1207; border-color: #ffd166; }
+  .hbtn:disabled { opacity: .45; }
+  #hudDots { display: flex; gap: 6px; justify-content: center; padding-top: 2px; }
+  #hudDots .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.65); background: transparent;
+  }
+  #hudDots .dot.done { background: #ffd166; border-color: #ffd166; }
+  #hudDots .dot.now { border-color: #fff; box-shadow: 0 0 0 2px rgba(255,209,102,.6); }
+  #powerWrap {
+    position: absolute; left: 50%; bottom: calc(52px + env(safe-area-inset-bottom));
+    transform: translateX(-50%); width: 220px; height: 14px; border-radius: 999px;
+    background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.45);
+    overflow: hidden; pointer-events: none;
+  }
+  #powerWrap.hidden { display: none; }
+  #powerFill { height: 100%; width: 0%; background: #06d6a0; border-radius: 999px; }
   #hint {
     position: absolute; left: 0; right: 0; bottom: calc(14px + env(safe-area-inset-bottom));
     text-align: center; font-size: 14px; font-weight: 600;
@@ -74,6 +124,7 @@
     opacity: 0; transition: opacity .18s ease, transform .18s ease; pointer-events: none; white-space: nowrap;
   }
   #banner.show { opacity: 1; transform: translateX(-50%) scale(1.05); }
+  #banner .stars { display: block; text-align: center; font-size: 40px; letter-spacing: 6px; }
   #finishCard { justify-content: flex-start; overflow-y: auto; }
   #finishCard h2 { margin: 6px 0 2px; font-size: 26px; }
   #finishCard .sub { opacity: .85; font-size: 14px; margin-bottom: 4px; }
@@ -96,10 +147,22 @@
   <canvas id="game" width="400" height="640"></canvas>
 
   <div id="hud" class="hidden">
-    <span id="hudHole">Hole 1 &middot; Par 3</span>
-    <span id="hudScore">Strokes 0 &middot; Total 0</span>
-    <button id="muteBtn" type="button">Sound: On</button>
+    <div class="hudrow">
+      <span id="hudHole">Hole 1 &middot; Par 3</span>
+      <span class="hbtns">
+        <button id="viewBtn" class="hbtn" type="button" title="Whole-hole view">&#128269;</button>
+        <button id="redoBtn" class="hbtn" type="button" title="Redo last shot">&#8635; 3</button>
+        <button id="pauseBtn" class="hbtn" type="button" title="Pause">&#9208;</button>
+        <button id="muteBtn" class="hbtn" type="button" title="Sound">&#128266;</button>
+      </span>
+    </div>
+    <div class="hudrow">
+      <span id="hudScore">Strokes 0 &middot; Total 0 &middot; &#11088; 0</span>
+      <span id="hudStars" class="dim">3&#9733; &le;3 &middot; 2&#9733; 4 &middot; 1&#9733; 5 &middot; &#10005; 7</span>
+    </div>
+    <div id="hudDots"></div>
   </div>
+  <div id="powerWrap" class="hidden"><div id="powerFill"></div></div>
   <div id="hint" class="hidden">Pull back anywhere on the green, release to putt</div>
   <div id="banner"></div>
 
@@ -120,11 +183,27 @@
     </div>
   </div>
 
+  <!-- Pause overlay -->
+  <div id="pauseScreen" class="screen center hidden">
+    <div class="panel" style="text-align:center">
+      <h3>Paused</h3>
+      <div class="row"><button id="resumeBtn" class="btn" type="button">Resume</button></div>
+      <div style="height:8px"></div>
+      <div class="row">
+        <button id="restartHoleBtn" class="btn small secondary" type="button">Restart hole</button>
+        <button id="restartRoundBtn" class="btn small secondary" type="button">Restart round</button>
+      </div>
+      <div style="height:8px"></div>
+      <div class="row"><button id="quitBtn" class="btn small secondary" type="button">Quit to title</button></div>
+    </div>
+  </div>
+
   <!-- Finish screen: plain scorecard -->
   <div id="finishScreen" class="screen hidden">
     <div id="finishCard" class="panel">
       <h2>Round complete!</h2>
       <div class="sub" id="finishTotal"></div>
+      <div class="sub" id="finishStars"></div>
       <table class="scorecard" id="scoreTable"></table>
       <div style="height:10px"></div>
       <h3>Enter your initials</h3>
@@ -149,7 +228,7 @@
 
 <script>
 "use strict";
-/* ============ Supabase config: fill these in at connection time ============ */
+/* ============ Supabase config (same project as v1) ============ */
 const SUPABASE_URL = "https://lasrtfcorznpgsgvgaoj.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxhc3J0ZmNvcnpucGdzZ3ZnYW9qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4ODQ3MTksImV4cCI6MjEwOTQ2MDcxOX0.SO3_cAfP9ZPCPjooOqgutJOCZdhmDfx7poP2QU6qv00";
 const SUPABASE_CONFIGURED =
@@ -161,56 +240,139 @@ if (SUPABASE_CONFIGURED && typeof window.supabase !== "undefined") {
   catch (e) { supabaseClient = null; }
 }
 
-/* ============ Course geometry (logical units: 400 x 640) ============ */
+/* ============ Course geometry (logical units: 400 x 640) — same as v1 ============ */
 const W = 400, H = 640;
 const BALL_R = 8, CUP_R = 13, BUMPER_R = 14;
-const MAX_STROKES = 10;
 const MAX_DRAG = 150, MAX_SPEED = 950, MIN_POWER = 0.08;
+/* Elevation: PIT = no ground (water / gap — the ball splashes if it lands
+   there). GRAV_Z pulls a jumping ball down; SLOPE_G is the pull of gravity
+   along a slope (acceleration = -SLOPE_G * slope). */
+const PIT = -1e9, GRAV_Z = 900, SLOPE_G = 800;
+/* Stars: <= par = 3, par+1 = 2, par+2 = 1, par+3 = 0 (sunk), par+4 = fail.
+   A failed hole records par+4 strokes so the round always ends. */
+const REDOS_PER_ROUND = 3;
 
-/* Walls are [x1,y1,x2,y2] segments. Bumpers are [x,y] circles.
-   Loop: ring with a gap (gapA..gapB in radians, 0 = east, clockwise on screen).
-   Windmill: rotating arms around a hub. Gate: a bar sliding inside a wall gap.
-   Blaze: a medallion pacing horizontally; ball inside swatR gets swatted back. */
+/* Walls are [x1,y1,x2,y2] segments.
+   ramps: height zones {x1,y1,x2,y2,h0,h1,axis} — height goes from h0 at
+     the y1 (or x1) edge to h1 at the y2 (or x2) edge. Flat plateaus are
+     ramps with h0 == h1. groundH() takes the highest zone at a point.
+   water: [x1,x2,y1,y2] — no ground; a ball that lands in it splashes and
+     goes back to where the shot started. bridges: {x1,y1,x2,y2,h} — a
+     deck over the water; the ball must stay on it.
+   loop: a VERTICAL rollercoaster loop {x, y, r, minSpeed}. The ball enters
+     at the bottom going north with speed >= minSpeed, travels up one side,
+     over the top, and down the other side, and exits going north.
+   pinballs: [[x,y]] — round bumpers that kick the ball away hard.
+   movers: [{x,y,r,axis,min,max,speed,phase}] — bumpers sliding back and
+     forth; they shove the ball with their own motion.
+   arcs: [{x,y,r,a0,a1}] — curved walls, sampled into segments at load
+     (a0..a1 in radians, 0 = east, clockwise on screen).
+   spiral: {x,y,r0,r1,a0,turns} — a wall winding inward from r0 to r1
+     starting at angle a0.
+   circle: {x,y,r,gapA,gapB} — a ring wall with a gap (for the spiral bowl).
+   tunnel: {x1,y1,x2,y2} — a tube the ball rolls under (visual + side walls).
+   blaze: a medallion pacing horizontally; ball inside swatR gets swatted back. */
 const HOLES = [
-  { name: "Purrfect Putts", par: 3, surface: "hole1.png",
+  { name: "Purrfect Putts", par: 3, surface: "hole1.png", tip: "A pinball guards the ramp — bank around it!",
     tee: [200, 580], cup: [200, 88],
-    walls: [], bumpers: [[140, 380], [260, 300], [200, 215]] },
-  { name: "Putting Challenge", par: 3, surface: "hole2.png",
-    tee: [100, 580], cup: [300, 92],
-    walls: [[200, 180, 200, 430]],
-    bumpers: [[115, 300], [300, 410], [285, 215]] },
-  { name: "Meet Blaze", par: 4, surface: "hole3.png",
-    tee: [200, 580], cup: [200, 82],
-    walls: [], bumpers: [[120, 425], [280, 425], [200, 285], [120, 185]] },
-  { name: "Nassau", par: 3, surface: "hole4.png",
+    ramps: [
+      { x1: 140, y1: 60, x2: 260, y2: 400, h0: 30, h1: 30, axis: "y" },
+      { x1: 140, y1: 400, x2: 260, y2: 480, h0: 30, h1: 0, axis: "y" } ],
+    pinballs: [[120, 300], [280, 300], [200, 440]],
+    walls: [[140, 180, 180, 140], [260, 180, 220, 140]] },
+  { name: "Putting Challenge", par: 3, surface: "hole2.png", tip: "The loop moved left — thread the gap and hit it hard!",
     tee: [200, 580], cup: [200, 88],
-    walls: [], bumpers: [[108, 480], [292, 480], [200, 185]],
-    windmill: { x: 200, y: 335, len: 72, speed: 0.9, angle: 0 } },
-  { name: "Mini Golf", par: 4, surface: "hole5.png",
+    loop: { x: 150, y: 340, r: 55, minSpeed: 200 },
+    ramps: [ { x1: 60, y1: 140, x2: 340, y2: 285, h0: 0, h1: 20, axis: "y" } ],
+    pinballs: [[110, 160], [270, 160]],
+    walls: [[170, 450, 230, 420]] },
+  { name: "Meet Blaze", par: 4, surface: "hole3.png", tip: "The bridge moved east — aim right and cross it clean!",
     tee: [200, 580], cup: [200, 88],
-    walls: [], bumpers: [[108, 335], [292, 335], [140, 485], [260, 485]],
-    loop: { x: 200, y: 330, r: 58, gapA: -Math.PI / 2 - 0.55, gapB: -Math.PI / 2 + 0.55 } },
-  { name: "Stableford", par: 4, surface: "hole6.png",
+    water: [[40, 360, 250, 360]],
+    bridges: [{ x1: 240, y1: 240, x2: 304, y2: 370, h: 12 }],
+    pinballs: [[110, 450], [290, 450]],
+    movers: [{ x: 200, y: 180, r: 14, axis: "x", min: 110, max: 290, speed: 0.9, phase: 0 }] },
+  { name: "Nassau", par: 3, surface: "hole4.png", tip: "A pinball guards the kicker — bank around it and fly!",
     tee: [200, 580], cup: [200, 88],
-    walls: [], bumpers: [[120, 425], [280, 425], [200, 160]],
-    windmill: { x: 200, y: 300, len: 66, speed: 1.15, angle: 0.6 } },
-  { name: "Bingo Bango Bongo", par: 4, surface: "hole7.png",
-    tee: [200, 580], cup: [200, 82],
-    walls: [[40, 480, 280, 480], [120, 360, 360, 360], [40, 240, 280, 240]],
-    bumpers: [[322, 420], [78, 300], [322, 180]] },
-  { name: "Hole-in-One", par: 3, surface: "hole8.png",
+    ramps: [ { x1: 80, y1: 370, x2: 320, y2: 440, h0: 26, h1: 0, axis: "y" } ],
+    water: [[20, 380, 300, 370]],
+    pinballs: [[200, 470]],
+    walls: [[120, 240, 170, 180], [280, 240, 230, 180]] },
+  { name: "Mini Golf", par: 4, surface: "hole5.png", tip: "Ride the spiral around to the middle.",
+    tee: [200, 580], cup: [200, 290],
+    circle: { x: 200, y: 290, r: 140, gapA: Math.PI / 2 - 0.38, gapB: Math.PI / 2 + 0.38 },
+    spiral: { x: 200, y: 290, r0: 125, r1: 45, a0: Math.PI / 2, turns: 1 },
+    pinballs: [[90, 520], [310, 520]] },
+  { name: "Stableford", par: 4, surface: "hole6.png", tip: "Weave the chicane, dodge the mover, mind the ridge.",
     tee: [200, 580], cup: [200, 88],
-    walls: [[40, 330, 160, 330], [240, 330, 360, 330]],
-    bumpers: [[110, 480], [290, 480], [200, 185]],
-    gate: { y: 330, min: 150, max: 250, len: 60, speed: 1.1, phase: 0 } },
-  { name: "The Final Hole", par: 4, surface: "hole9.png",
+    walls: [[40, 440, 260, 440], [140, 310, 360, 310]],
+    movers: [{ x: 200, y: 375, r: 14, axis: "x", min: 120, max: 280, speed: 1.0, phase: 0.8 }],
+    ramps: [
+      { x1: 170, y1: 120, x2: 185, y2: 230, h0: 0, h1: 16, axis: "x" },
+      { x1: 185, y1: 120, x2: 215, y2: 230, h0: 16, h1: 16, axis: "x" },
+      { x1: 215, y1: 120, x2: 230, y2: 230, h0: 16, h1: 0, axis: "x" } ] },
+  { name: "Bingo Bango Bongo", par: 4, surface: "hole7.png", tip: "Left is safe. Right is fast — and has a gap.",
+    tee: [200, 580], cup: [200, 88],
+    walls: [[185, 470, 225, 470], [205, 470, 205, 200], [205, 280, 280, 280], [330, 280, 360, 280]], // cap at the divider's base (a straight shot bounces off it) + divider + gate walls (gap 280-330)
+    ramps: [
+      { x1: 40, y1: 280, x2: 195, y2: 480, h0: 20, h1: 0, axis: "y" },
+      { x1: 205, y1: 280, x2: 360, y2: 480, h0: 0, h1: 20, axis: "y" } ],
+    pinballs: [[285, 380]] },
+  { name: "Hole-in-One", par: 3, surface: "hole8.png", tip: "The tunnel mouth is narrow — thread it clean!",
+    tee: [200, 580], cup: [200, 88],
+    walls: [[110, 470, 185, 400], [290, 470, 215, 400], [185, 300, 185, 400], [215, 300, 215, 400]],
+    tunnel: { x1: 185, y1: 300, x2: 215, y2: 400 },
+    ramps: [ { x1: 60, y1: 120, x2: 340, y2: 300, h0: 0, h1: 24, axis: "y" } ],
+    pinballs: [[130, 150], [270, 150], [200, 450]] },
+  { name: "The Final Hole", par: 4, surface: "hole9.png", tip: "The fairway is narrower now — thread it past Blaze!",
     tee: [200, 580], cup: [200, 70],
-    walls: [], bumpers: [[108, 405], [292, 405], [108, 520], [292, 520]],
-    loop: { x: 200, y: 405, r: 55, gapA: -Math.PI / 2 - 0.55, gapB: -Math.PI / 2 + 0.55 },
-    windmill: { x: 200, y: 225, len: 62, speed: 1.35, angle: 0.3 },
-    blaze: { y: 142, min: 90, max: 310, speed: 1.5, phase: 0, swatR: 54 } },
+    ramps: [
+      { x1: 90, y1: 50, x2: 310, y2: 220, h0: 24, h1: 24, axis: "y" },
+      { x1: 90, y1: 220, x2: 310, y2: 330, h0: 24, h1: 0, axis: "y" } ],
+    water: [[8, 90, 50, 330], [310, 392, 50, 330]],
+    pinballs: [[120, 150], [280, 150], [200, 150]],
+    blaze: { y: 380, min: 90, max: 310, speed: 1.5, phase: 0, swatR: 54 } },
 ];
 const TOTAL_PAR = HOLES.reduce((s, h) => s + h.par, 0); // 32
+
+/* Sample curved walls (circles, spirals, arcs) into straight wall segments
+   at load, so the plain segment collision already in the engine handles them. */
+function sampleArc(h, cx, cy, r, a0, a1, steps) {
+  for (let i = 0; i < steps; i++) {
+    const aA = a0 + (a1 - a0) * i / steps, aB = a0 + (a1 - a0) * (i + 1) / steps;
+    (h.walls = h.walls || []).push([
+      cx + Math.cos(aA) * r, cy + Math.sin(aA) * r,
+      cx + Math.cos(aB) * r, cy + Math.sin(aB) * r ]);
+  }
+}
+function buildHoleGeometry() {
+  HOLES.forEach(h => {
+    if (h.circle) {
+      const c = h.circle, steps = 40;
+      for (let i = 0; i < steps; i++) {
+        const aA = (i / steps) * Math.PI * 2, aB = ((i + 1) / steps) * Math.PI * 2;
+        const mid = (aA + aB) / 2;
+        if (inGap(mid, c.gapA, c.gapB)) continue; // leave the entry gap open
+        (h.walls = h.walls || []).push([
+          c.x + Math.cos(aA) * c.r, c.y + Math.sin(aA) * c.r,
+          c.x + Math.cos(aB) * c.r, c.y + Math.sin(aB) * c.r ]);
+      }
+    }
+    if (h.spiral) {
+      const s = h.spiral, steps = 36, total = s.turns * Math.PI * 2;
+      for (let i = 0; i < steps; i++) {
+        const tA = i / steps, tB = (i + 1) / steps;
+        const aA = s.a0 + total * tA, aB = s.a0 + total * tB;
+        const rA = s.r0 + (s.r1 - s.r0) * tA, rB = s.r0 + (s.r1 - s.r0) * tB;
+        (h.walls = h.walls || []).push([
+          s.x + Math.cos(aA) * rA, s.y + Math.sin(aA) * rA,
+          s.x + Math.cos(aB) * rB, s.y + Math.sin(aB) * rB ]);
+      }
+    }
+    (h.arcs || []).forEach(a => sampleArc(h, a.x, a.y, a.r, a.a0, a.a1, 20));
+  });
+}
+buildHoleGeometry();
 
 /* ============ Images (byte-copied art, used exactly as supplied) ============ */
 const IMAGES = {};
@@ -259,34 +421,73 @@ canvas.width = W * dpr; canvas.height = H * dpr;
 ctx.scale(dpr, dpr);
 
 let screen = "title"; // title | hub | play | finish
-let holeIndex = 0, strokesThisHole = 0, holeScores = [];
-let ball = { x: 200, y: 580, vx: 0, vy: 0, moving: false };
+let paused = false;
+let viewMode = "follow"; // follow (behind the ball) | over (whole-hole view)
+let holeIndex = 0, strokesThisHole = 0, holeScores = [], holeStars = [], totalStars = 0;
+let redosLeft = REDOS_PER_ROUND;
+let shotStart = null; // ball position + strokes before the last shot (for redo)
+let ball = { x: 200, y: 580, vx: 0, vy: 0, moving: false,
+  z: 0, vz: 0, grounded: true, inLoop: null, loopScale: 1, pz: 0, pinned: false };
+let restTimer = 0, restX = 200, restY = 580; // stuck detector (pinned on a slope)
 let aim = { active: false, pointerId: null, sx: 0, sy: 0, cx: 0, cy: 0 };
 let particles = [], trail = [], flash = 0, bannerTimer = null;
 let lastTime = 0, swatCooldown = 0;
 let holeOver = false;
+let introLeft = 0; // seconds the hole's poster intro card stays up (tap skips)
+
+/* Camera: perspective over the ground plane, looking north (-y).
+   Follow mode sits behind the ball; overview pulls high and far back. */
+const cam = { cx: 200, cy: 730, camH: 180, focal: 300, horizon: 150 };
 
 function hole() { return HOLES[holeIndex]; }
 function totalStrokes() { return holeScores.reduce((s, v) => s + v, 0); }
+function starsFor(strokes, par) {
+  if (strokes <= par) return 3;
+  if (strokes === par + 1) return 2;
+  if (strokes === par + 2) return 1;
+  return 0;
+}
 function show(id, on) { document.getElementById(id).classList.toggle("hidden", !on); }
 function setScreen(s) {
   screen = s;
+  paused = false;
   show("titleScreen", s === "title");
   show("hubScreen", s === "hub");
   show("finishScreen", s === "finish");
+  show("pauseScreen", false);
   show("hud", s === "play");
   show("hint", s === "play");
 }
-function showBanner(text, ms) {
+function showBanner(html, ms) {
   const b = document.getElementById("banner");
-  b.textContent = text; b.classList.add("show");
+  b.innerHTML = html; b.classList.add("show");
   clearTimeout(bannerTimer);
-  bannerTimer = setTimeout(() => b.classList.remove("show"), ms || 1300);
+  bannerTimer = setTimeout(() => b.classList.remove("show"), ms || 1500);
 }
 function updateHud() {
   const h = hole();
-  document.getElementById("hudHole").textContent = "Hole " + (holeIndex + 1) + " · " + h.name + " · Par " + h.par;
-  document.getElementById("hudScore").textContent = "Strokes " + strokesThisHole + " · Total " + (totalStrokes() + strokesThisHole);
+  document.getElementById("hudHole").textContent =
+    "Hole " + (holeIndex + 1) + " of 9 · " + h.name + " · Par " + h.par;
+  // Once the hole is over, its strokes already sit in holeScores — don't
+  // count them twice in the total while the banner is up.
+  const cur = holeOver ? 0 : strokesThisHole;
+  document.getElementById("hudScore").textContent =
+    "Strokes " + strokesThisHole + " · Total " + (totalStrokes() + cur) + " · ★ " + totalStars;
+  document.getElementById("hudStars").textContent =
+    "3★ ≤" + h.par + " · 2★ " + (h.par + 1) + " · 1★ " + (h.par + 2) + " · ✕ " + (h.par + 4);
+  const dots = document.getElementById("hudDots");
+  let dh = "";
+  for (let i = 0; i < 9; i++) {
+    let cls = "dot";
+    if (i < holeScores.length) cls += " done";
+    else if (i === holeIndex) cls += " now";
+    dh += '<span class="' + cls + '" title="Hole ' + (i + 1) + (i < holeStars.length ? " · " + holeStars[i] + "★" : "") + '"></span>';
+  }
+  dots.innerHTML = dh;
+  const rb = document.getElementById("redoBtn");
+  rb.innerHTML = "&#8635; " + redosLeft;
+  rb.disabled = !(redosLeft > 0 && strokesThisHole > 0 && !ball.moving && !holeOver && screen === "play" && !paused);
+  document.getElementById("viewBtn").classList.toggle("active", viewMode === "over");
 }
 function badgeFor(strokes, par) {
   if (strokes === 1) return "ACE!";
@@ -312,7 +513,7 @@ function confetti() {
   }
 }
 
-/* ============ Physics helpers ============ */
+/* ============ Physics helpers (same engine as v1) ============ */
 function distToSeg(px, py, x1, y1, x2, y2) {
   const dx = x2 - x1, dy = y2 - y1;
   const len2 = dx * dx + dy * dy || 1;
@@ -323,8 +524,18 @@ function distToSeg(px, py, x1, y1, x2, y2) {
 }
 function collideSegment(x1, y1, x2, y2, extraVx, extraVy) {
   const r = distToSeg(ball.x, ball.y, x1, y1, x2, y2);
-  if (r.d < BALL_R && r.d > 0.001) {
-    const nx = r.nx / r.d, ny = r.ny / r.d;
+  if (r.d < BALL_R) {
+    let nx, ny;
+    if (r.d > 0.001) { nx = r.nx / r.d; ny = r.ny / r.d; }
+    else {
+      // The ball centre is exactly on the wall line, so there is no
+      // push-out direction from the closest point. Use the segment's
+      // perpendicular, pointing against the ball's travel, so a shot
+      // fired straight down a wall still bounces off it.
+      const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
+      nx = -dy / len; ny = dx / len;
+      if (ball.vx * nx + ball.vy * ny > 0) { nx = -nx; ny = -ny; }
+    }
     ball.x = r.cx + nx * BALL_R; ball.y = r.cy + ny * BALL_R;
     const rvx = ball.vx - (extraVx || 0), rvy = ball.vy - (extraVy || 0);
     const dot = rvx * nx + rvy * ny;
@@ -336,52 +547,138 @@ function collideSegment(x1, y1, x2, y2, extraVx, extraVy) {
     }
   }
 }
-function collideCircle(cx, cy, cr, isBumper) {
+function collideCircle(cx, cy, cr, isBumper, ex, ey, power) {
   const dx = ball.x - cx, dy = ball.y - cy, d = Math.hypot(dx, dy);
   const min = cr + BALL_R;
   if (d < min && d > 0.001) {
     const nx = dx / d, ny = dy / d;
     ball.x = cx + nx * min; ball.y = cy + ny * min;
-    const dot = ball.vx * nx + ball.vy * ny;
+    const rvx = ball.vx - (ex || 0), rvy = ball.vy - (ey || 0);
+    const dot = rvx * nx + rvy * ny;
     if (dot < 0) {
-      ball.vx -= 2 * dot * nx; ball.vy -= 2 * dot * ny;
+      ball.vx = rvx - 2 * dot * nx; ball.vy = rvy - 2 * dot * ny;
       ball.vx *= 0.78; ball.vy *= 0.78;
-      if (isBumper) { sfx.bumper(); burst(ball.x, ball.y, ["#7ec8ff", "#ffffff"], 8, 140); }
+      ball.vx += (ex || 0); ball.vy += (ey || 0);
+      if (power) { // pinball bumper: kicks the ball away hard
+        const sp = Math.hypot(ball.vx, ball.vy) || 1;
+        const ns = Math.min(sp * power, 900);
+        ball.vx = ball.vx / sp * ns; ball.vy = ball.vy / sp * ns;
+        sfx.bumper(); burst(ball.x, ball.y, ["#ff6b6b", "#ffd166", "#ffffff"], 12, 200);
+      } else if (isBumper) { sfx.bumper(); burst(ball.x, ball.y, ["#7ec8ff", "#ffffff"], 8, 140); }
       else sfx.bounce();
     }
   }
+}
+/* ============ Elevation: ground height and slope ============
+   groundH returns the ground height at a point, or PIT where there is no
+   ground (water / gap). Bridges are checked first so a deck over water
+   counts as ground. slopeAt returns the height gradient {gx, gy}. */
+function groundH(x, y) {
+  const h = hole();
+  const br = h.bridges || [];
+  for (let i = 0; i < br.length; i++) {
+    const b = br[i];
+    if (x >= b.x1 && x <= b.x2 && y >= b.y1 && y <= b.y2) return b.h;
+  }
+  const w = h.water || [];
+  for (let i = 0; i < w.length; i++) {
+    if (x >= w[i][0] && x <= w[i][1] && y >= w[i][2] && y <= w[i][3]) return PIT;
+  }
+  let gh = 0;
+  const rs = h.ramps || [];
+  for (let i = 0; i < rs.length; i++) {
+    const r = rs[i];
+    if (x < r.x1 || x > r.x2 || y < r.y1 || y > r.y2) continue;
+    let t;
+    if (r.axis === "x") t = (x - r.x1) / ((r.x2 - r.x1) || 1);
+    else t = (y - r.y1) / ((r.y2 - r.y1) || 1);
+    t = Math.max(0, Math.min(1, t));
+    gh = Math.max(gh, r.h0 + (r.h1 - r.h0) * t);
+  }
+  return gh;
+}
+function slopeAt(x, y) {
+  const h = hole();
+  let gx = 0, gy = 0;
+  const rs = h.ramps || [];
+  for (let i = 0; i < rs.length; i++) {
+    const r = rs[i];
+    if (x < r.x1 || x > r.x2 || y < r.y1 || y > r.y2) continue;
+    if (r.axis === "x") gx += (r.h1 - r.h0) / ((r.x2 - r.x1) || 1);
+    else gy += (r.h1 - r.h0) / ((r.y2 - r.y1) || 1);
+  }
+  return { gx, gy };
+}
+function splash() {
+  // Ball landed in water / a gap: back to where the shot started.
+  ball.moving = false; ball.vx = 0; ball.vy = 0;
+  const s = shotStart || { x: hole().tee[0], y: hole().tee[1], z: 0 };
+  ball.x = s.x; ball.y = s.y;
+  ball.z = groundH(s.x, s.y); if (ball.z === PIT) ball.z = 0;
+  ball.vz = 0; ball.grounded = true; ball.inLoop = null; ball.loopScale = 1;
+  showBanner("SPLASH!", 1200); sfx.swat(); flash = 0.25;
+  burst(ball.x, ball.y, ["#4cc9f0", "#ffffff"], 18, 220);
+  updateHud();
 }
 function normAngle(a) { while (a > Math.PI) a -= 2 * Math.PI; while (a < -Math.PI) a += 2 * Math.PI; return a; }
 function inGap(a, gapA, gapB) { return normAngle(a - gapA) <= normAngle(gapB - gapA) + 0.001 && normAngle(a - gapA) >= 0; }
 
 /* ============ Game flow ============ */
+function snapCamera() {
+  if (viewMode === "over") { cam.cx = 200; cam.cy = 1080; cam.camH = 650; }
+  else { cam.cx = Math.max(110, Math.min(290, ball.x)); cam.cy = Math.min(ball.y + 150, 700); cam.camH = 180; }
+}
 function startHole(i) {
   holeIndex = i; strokesThisHole = 0; holeOver = false;
   const h = hole();
-  ball = { x: h.tee[0], y: h.tee[1], vx: 0, vy: 0, moving: false };
+  ball = { x: h.tee[0], y: h.tee[1], vx: 0, vy: 0, moving: false,
+    z: 0, vz: 0, grounded: true, inLoop: null, loopScale: 1, pz: 0, pinned: false };
+  restTimer = 0; restX = h.tee[0]; restY = h.tee[1];
+  shotStart = null;
   trail = []; aim.active = false;
+  introLeft = 1.2; // hole poster intro card (tap skips)
+  snapCamera();
   setScreen("play"); updateHud();
+}
+function advanceAfter(ms) {
+  setTimeout(() => {
+    if (holeIndex >= HOLES.length - 1) finishRound();
+    else startHole(holeIndex + 1);
+  }, ms);
 }
 function endHole() {
   if (holeOver) return;
   holeOver = true;
-  holeScores.push(strokesThisHole);
   const h = hole();
+  const stars = starsFor(strokesThisHole, h.par);
+  holeScores.push(strokesThisHole);
+  holeStars.push(stars);
+  totalStars += stars;
   const badge = badgeFor(strokesThisHole, h.par);
-  if (badge) { showBanner(badge); }
+  const starRow = stars > 0 ? '<span class="stars">' + "★".repeat(stars) + "☆".repeat(3 - stars) + "</span>" : "";
+  showBanner(starRow + (badge || "SUNK!"), 1600);
   sfx.sink();
   burst(h.cup[0], h.cup[1], ["#ffd166", "#ffffff", "#06d6a0"], 26, 240);
   flash = 0.35;
-  setTimeout(() => {
-    if (holeIndex >= HOLES.length - 1) finishRound();
-    else startHole(holeIndex + 1);
-  }, badge ? 1400 : 900);
+  updateHud();
+  advanceAfter(1700);
+}
+function failHole() {
+  if (holeOver) return;
+  holeOver = true;
+  const h = hole();
+  holeScores.push(h.par + 4); // fail records the cap so the round always ends
+  holeStars.push(0);
+  showBanner("✕ NO STARS", 1500);
+  updateHud();
+  advanceAfter(1600);
 }
 function finishRound() {
   setScreen("finish");
   document.getElementById("finishTotal").textContent =
     "Total " + totalStrokes() + " · Par " + TOTAL_PAR + " · " +
     (totalStrokes() <= TOTAL_PAR ? "Under par — nice round!" : (totalStrokes() - TOTAL_PAR) + " over par");
+  document.getElementById("finishStars").textContent = "Stars ★ " + totalStars + " of 27";
   const tbl = document.getElementById("scoreTable");
   let html = "<tr><th>Hole</th>";
   for (let i = 0; i < 9; i++) html += "<th>" + (i + 1) + "</th>";
@@ -389,7 +686,9 @@ function finishRound() {
   HOLES.forEach(h => html += "<td>" + h.par + "</td>");
   html += "<td>" + TOTAL_PAR + "</td></tr><tr><td>Strokes</td>";
   holeScores.forEach(s => html += "<td>" + s + "</td>");
-  html += "<td>" + totalStrokes() + "</td></tr>";
+  html += "<td>" + totalStrokes() + "</td></tr><tr><td>Stars</td>";
+  holeStars.forEach(s => html += "<td>" + (s > 0 ? s + "★" : "–") + "</td>");
+  html += "<td>" + totalStars + "★</td></tr>";
   tbl.innerHTML = html;
   confetti(); flash = 0.5;
   refreshBoard("finishBoard");
@@ -398,8 +697,23 @@ function finishRound() {
   document.getElementById("saveScoreBtn").disabled = !SUPABASE_CONFIGURED;
 }
 function startRound() {
-  holeScores = [];
+  holeScores = []; holeStars = []; totalStars = 0;
+  redosLeft = REDOS_PER_ROUND;
   startHole(0);
+}
+function redoShot() {
+  if (redosLeft <= 0 || strokesThisHole <= 0 || ball.moving || holeOver || !shotStart) return;
+  if (screen !== "play" || paused) return;
+  ball.x = shotStart.x; ball.y = shotStart.y;
+  ball.vx = 0; ball.vy = 0; ball.moving = false;
+  ball.z = shotStart.z || 0; ball.vz = 0; ball.grounded = true;
+  ball.inLoop = null; ball.loopScale = 1; ball.pinned = false;
+  strokesThisHole = shotStart.strokes;
+  shotStart = null;
+  redosLeft--;
+  trail = [];
+  sfx.click();
+  updateHud();
 }
 
 /* ============ Input: relative pull-back, drags never leave the game ============ */
@@ -415,15 +729,18 @@ function aimVector() {
 function shoot() {
   const v = aimVector();
   if (v.len < 10 || v.power < MIN_POWER) return;
+  shotStart = { x: ball.x, y: ball.y, z: ball.z, strokes: strokesThisHole };
   ball.vx = v.dx / v.len * v.power * MAX_SPEED;
   ball.vy = v.dy / v.len * v.power * MAX_SPEED;
-  ball.moving = true; strokesThisHole++;
+  ball.moving = true; ball.pinned = false; strokesThisHole++;
   sfx.putt(); updateHud();
   trail = [];
 }
 canvas.addEventListener("pointerdown", (e) => {
   ensureAudio();
-  if (screen !== "play" || ball.moving || holeOver) return;
+  if (screen !== "play" || paused || holeOver) return;
+  if (introLeft > 0) { introLeft = 0; return; } // tap skips the intro card
+  if (ball.moving) return;
   try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
   const p = canvasPos(e);
   aim = { active: true, pointerId: e.pointerId, sx: p.x, sy: p.y, cx: p.x, cy: p.y };
@@ -456,7 +773,29 @@ document.getElementById("teeOffBtn").addEventListener("click", () => { sfx.click
 document.getElementById("playAgainBtn").addEventListener("click", () => { sfx.click(); startRound(); });
 document.getElementById("muteBtn").addEventListener("click", () => {
   ensureAudio(); muted = !muted;
-  document.getElementById("muteBtn").textContent = muted ? "Sound: Off" : "Sound: On";
+  document.getElementById("muteBtn").innerHTML = muted ? "&#128263;" : "&#128266;";
+});
+document.getElementById("viewBtn").addEventListener("click", () => {
+  if (screen !== "play") return;
+  viewMode = viewMode === "follow" ? "over" : "follow";
+  sfx.click(); updateHud();
+});
+document.getElementById("redoBtn").addEventListener("click", () => { redoShot(); });
+document.getElementById("pauseBtn").addEventListener("click", () => {
+  if (screen !== "play" || holeOver) return;
+  paused = true; sfx.click(); show("pauseScreen", true); updateHud();
+});
+document.getElementById("resumeBtn").addEventListener("click", () => {
+  paused = false; sfx.click(); show("pauseScreen", false); updateHud();
+});
+document.getElementById("restartHoleBtn").addEventListener("click", () => {
+  sfx.click(); show("pauseScreen", false); paused = false; startHole(holeIndex);
+});
+document.getElementById("restartRoundBtn").addEventListener("click", () => {
+  sfx.click(); show("pauseScreen", false); paused = false; startRound();
+});
+document.getElementById("quitBtn").addEventListener("click", () => {
+  sfx.click(); setScreen("title"); refreshBoard("titleBoard");
 });
 document.getElementById("saveScoreBtn").addEventListener("click", async () => {
   const initials = ["init1", "init2", "init3"].map(id => {
@@ -496,89 +835,526 @@ async function refreshBoard(elId) {
   el.textContent = ""; el.appendChild(ol);
 }
 
+/* ============ 3D-style camera: perspective over the ground plane ============
+   World coords stay 2D (same physics as v1). The camera looks north (-y)
+   from behind the ball in follow mode, or high and far back in overview.
+   proj() maps a world point at a given height above the ground to the screen.
+   The ground itself is drawn as mode-7 strips of the hole's poster. */
+function proj(wx, wy, hgt) {
+  const d = (cam.cy - wy) + 40;
+  if (d <= 6) return null;
+  const s = cam.focal / d;
+  return { x: W / 2 + (wx - cam.cx) * s, y: cam.horizon + (cam.camH - (hgt || 0)) * s, s };
+}
+function groundEllipse(cx, cy, r, hgt) {
+  const dy = cam.cy - cy;
+  const s = cam.focal / (dy + 40);
+  const dFar = Math.max(dy + r + 40, 6), dNear = Math.max(dy - r + 40, 6);
+  const yFar = cam.horizon + (cam.camH - (hgt || 0)) * cam.focal / dFar;
+  const yNear = cam.horizon + (cam.camH - (hgt || 0)) * cam.focal / dNear;
+  return { x: W / 2 + (cx - cam.cx) * s, y: (yFar + yNear) / 2,
+    rx: Math.max(0.5, r * s), ry: Math.max(0.5, (yNear - yFar) / 2), s };
+}
+function drawGround() {
+  // Sky
+  const sky = ctx.createLinearGradient(0, 0, 0, cam.horizon);
+  sky.addColorStop(0, "#6fb7d9"); sky.addColorStop(1, "#d8f1f8");
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, cam.horizon + 1);
+  ctx.fillStyle = "rgba(255,255,255,.8)";
+  [[70, 55, 26], [300, 38, 34], [205, 92, 20], [350, 100, 16]].forEach(c => {
+    ctx.beginPath(); ctx.ellipse(c[0], c[1], c[2], c[2] * 0.42, 0, 0, Math.PI * 2); ctx.fill();
+  });
+  // Surround (ground beyond the course: a floating green, like the reference)
+  ctx.fillStyle = "#0d3b22"; ctx.fillRect(0, cam.horizon, W, H - cam.horizon);
+  // The green itself is mowing stripes in world space. The hole posters are
+  // title-card art, not grass — they show as the hole intro card instead
+  // (see render), so the ground stays readable as a green at any distance.
+  const rowH = 3;
+  for (let y = cam.horizon + 2; y < H; y += rowH) {
+    const denom = y - cam.horizon;
+    const d = cam.camH * cam.focal / denom; // (distance ahead + 40)
+    const wy = cam.cy - (d - 40);
+    if (wy < -20 || wy > 660) continue;
+    const s = cam.focal / d;
+    const halfW = (W / 2) / s;
+    const x0 = Math.max(cam.cx - halfW, 0), x1 = Math.min(cam.cx + halfW, 400);
+    if (x1 <= x0) continue;
+    const sx0 = W / 2 + (x0 - cam.cx) * s, sx1 = W / 2 + (x1 - cam.cx) * s;
+    const band = Math.floor(wy / 64) % 2 === 0;
+    ctx.fillStyle = band ? "#2f9e57" : "#2a8f4e";
+    ctx.fillRect(sx0, y, sx1 - sx0, rowH + 0.5);
+    // Darker rough along the course edges (outer 20 world units).
+    ctx.fillStyle = "rgba(6,60,30,.55)";
+    const r0 = W / 2 + (20 - cam.cx) * s, r1 = W / 2 + (380 - cam.cx) * s;
+    if (x0 < 20) ctx.fillRect(sx0, y, Math.min(r0, sx1) - sx0, rowH + 0.5);
+    if (x1 > 380) ctx.fillRect(Math.max(r1, sx0), y, sx1 - Math.max(r1, sx0), rowH + 0.5);
+  }
+}
+/* Draw a flat quad in world space, all corners at height h. */
+function drawQuad(pts, h, fill) {
+  const p = pts.map(q => proj(q[0], q[1], h));
+  if (p.some(q => !q)) return;
+  ctx.beginPath();
+  ctx.moveTo(p[0].x, p[0].y);
+  for (let i = 1; i < p.length; i++) ctx.lineTo(p[i].x, p[i].y);
+  ctx.closePath();
+  ctx.fillStyle = fill; ctx.fill();
+}
+/* Draw a quad with a height per corner ([x, y, h] each) — for slanted faces. */
+function drawQuadH(corners, fill) {
+  const p = corners.map(q => proj(q[0], q[1], q[2]));
+  if (p.some(q => !q)) return;
+  ctx.beginPath();
+  ctx.moveTo(p[0].x, p[0].y);
+  for (let i = 1; i < p.length; i++) ctx.lineTo(p[i].x, p[i].y);
+  ctx.closePath();
+  ctx.fillStyle = fill; ctx.fill();
+}
+/* Draw a vertical face between two ground points, from height h0 to h1. */
+function drawFace(x1, y1, x2, y2, h0, h1, fill) {
+  drawQuadH([[x1, y1, h0], [x2, y2, h0], [x2, y2, h1], [x1, y1, h1]], fill);
+}
+function drawWater(w, t) {
+  drawQuad([[w[0], w[2]], [w[1], w[2]], [w[1], w[3]], [w[0], w[3]]], 0, "#1d6fb8");
+  ctx.strokeStyle = "rgba(255,255,255,.35)"; ctx.lineWidth = 1.5;
+  for (let i = 0; i < 3; i++) {
+    const wy = w[2] + (w[3] - w[2]) * (0.25 + i * 0.25);
+    const a = proj(w[0] + 14, wy, 1), b = proj(w[1] - 14, wy, 1);
+    if (!a || !b) continue;
+    const wob = Math.sin(t * 2 + i * 2.1) * 4;
+    ctx.beginPath(); ctx.moveTo(a.x, a.y + wob); ctx.lineTo(b.x, b.y - wob); ctx.stroke();
+  }
+}
+function drawBridge(b) {
+  drawFace(b.x1, b.y2, b.x2, b.y2, 0, b.h, "#7a5230"); // south skirt
+  drawQuad([[b.x1, b.y1], [b.x2, b.y1], [b.x2, b.y2], [b.x1, b.y2]], b.h, "#a9743f");
+  ctx.strokeStyle = "rgba(0,0,0,.25)"; ctx.lineWidth = 1;
+  for (let i = 1; i < 5; i++) {
+    const wy = b.y1 + (b.y2 - b.y1) * i / 5;
+    const a = proj(b.x1, wy, b.h), c = proj(b.x2, wy, b.h);
+    if (!a || !c) continue;
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(c.x, c.y); ctx.stroke();
+  }
+  [[b.x1 + 4, b.y1 + 4], [b.x2 - 4, b.y1 + 4], [b.x1 + 4, b.y2 - 4], [b.x2 - 4, b.y2 - 4]].forEach(pt => {
+    const p = proj(pt[0], pt[1], b.h + 8);
+    if (!p) return;
+    ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(2, 4 * p.s), 0, Math.PI * 2);
+    ctx.fillStyle = "#5e3d1f"; ctx.fill();
+  });
+}
+function drawHeightZone(r) {
+  // A ramp or plateau: stepped strips up the slope, so the rise reads.
+  const steps = 8;
+  for (let i = 0; i < steps; i++) {
+    const t0 = i / steps, t1 = (i + 1) / steps;
+    let quad, hmid;
+    if (r.axis === "x") {
+      const xA = r.x1 + (r.x2 - r.x1) * t0, xB = r.x1 + (r.x2 - r.x1) * t1;
+      hmid = r.h0 + (r.h1 - r.h0) * ((t0 + t1) / 2);
+      quad = [[xA, r.y1], [xB, r.y1], [xB, r.y2], [xA, r.y2]];
+    } else {
+      const yA = r.y1 + (r.y2 - r.y1) * t0, yB = r.y1 + (r.y2 - r.y1) * t1;
+      hmid = r.h0 + (r.h1 - r.h0) * ((t0 + t1) / 2);
+      quad = [[r.x1, yA], [r.x2, yA], [r.x2, yB], [r.x1, yB]];
+    }
+    drawQuad(quad, hmid, i % 2 === 0 ? "#35b061" : "#2f9e57");
+  }
+  // South face (toward the camera) where the zone's south edge is a real
+  // drop — skipped when another zone meets it there (ramp into plateau).
+  const h = hole();
+  if (r.axis === "y") {
+    const shared = (h.ramps || []).some(o => o !== r && Math.abs(o.y1 - r.y2) < 0.01);
+    if (!shared && r.h1 > 0) drawFace(r.x1, r.y2, r.x2, r.y2, 0, r.h1, "rgba(20,90,50,.9)");
+  } else {
+    drawQuadH([[r.x1, r.y2, 0], [r.x2, r.y2, 0], [r.x2, r.y2, r.h1], [r.x1, r.y2, r.h0]], "rgba(20,90,50,.9)");
+  }
+}
+function drawWall(w) {
+  const gh = groundH((w[0] + w[2]) / 2, (w[1] + w[3]) / 2);
+  const a = proj(w[0], w[1], gh), b = proj(w[2], w[3], gh);
+  const at = proj(w[0], w[1], gh + 14), bt = proj(w[2], w[3], gh + 14);
+  if (!a || !b || !at || !bt) return;
+  ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.lineTo(bt.x, bt.y); ctx.lineTo(at.x, at.y); ctx.closePath();
+  ctx.fillStyle = "#d9c49a"; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(at.x, at.y); ctx.lineTo(bt.x, bt.y);
+  ctx.lineWidth = 2; ctx.strokeStyle = "#b89b62"; ctx.stroke();
+}
+function drawPinball(p) {
+  const gh = groundH(p[0], p[1]);
+  const sh = groundEllipse(p[0], p[1], 15, gh);
+  ctx.beginPath(); ctx.ellipse(sh.x, sh.y, sh.rx, sh.ry, 0, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(0,0,0,.28)"; ctx.fill();
+  const c = proj(p[0], p[1], gh + 12);
+  if (!c) return;
+  const r = Math.max(1.5, 12 * c.s);
+  ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+  ctx.fillStyle = "#e63946"; ctx.fill();
+  ctx.save();
+  ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2); ctx.clip();
+  ctx.fillStyle = "#ffffff"; ctx.fillRect(c.x - r, c.y - r * 0.35, r * 2, r * 0.7);
+  ctx.restore();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = "rgba(0,0,0,.3)"; ctx.stroke();
+}
+function drawMover(mv) {
+  const x = mv._x !== undefined ? mv._x : mv.x;
+  const y = mv._y !== undefined ? mv._y : mv.y;
+  const gh = groundH(x, y);
+  const sh = groundEllipse(x, y, mv.r + 3, gh);
+  ctx.beginPath(); ctx.ellipse(sh.x, sh.y, sh.rx, sh.ry, 0, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(0,0,0,.28)"; ctx.fill();
+  const c = proj(x, y, gh + mv.r);
+  if (!c) return;
+  const r = Math.max(1.5, mv.r * c.s);
+  const g = ctx.createRadialGradient(c.x - r * 0.35, c.y - r * 0.4, r * 0.15, c.x, c.y, r);
+  g.addColorStop(0, "#ffe066"); g.addColorStop(0.6, "#f4b942"); g.addColorStop(1, "#b8860b");
+  ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = "rgba(0,0,0,.35)"; ctx.stroke();
+  ctx.beginPath(); ctx.arc(c.x, c.y, r * 0.45, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(255,255,255,.5)"; ctx.fill();
+}
+function drawLoop(L) {
+  // The vertical rollercoaster loop: a wooden tube ring standing on the
+  // ground, its center one radius up. The ball rides around it.
+  const gh = groundH(L.x, L.y);
+  const c = proj(L.x, L.y, gh + L.r);
+  if (!c) return;
+  const r = Math.max(2, L.r * c.s);
+  ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+  ctx.lineWidth = Math.max(4, 12 * c.s); ctx.strokeStyle = "#8b5a2b"; ctx.stroke();
+  ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+  ctx.lineWidth = Math.max(2, 6 * c.s); ctx.strokeStyle = "#a9743f"; ctx.stroke();
+  ctx.beginPath(); ctx.arc(c.x, c.y, r * 0.82, 0, Math.PI * 2);
+  ctx.lineWidth = Math.max(1, 2 * c.s); ctx.strokeStyle = "rgba(255,255,255,.25)"; ctx.stroke();
+}
+function drawTunnelBack(tn) {
+  // Dark floor inside, the roof, and the far (north) end with its arch.
+  drawQuad([[tn.x1, tn.y1], [tn.x2, tn.y1], [tn.x2, tn.y2], [tn.x1, tn.y2]], 0.5, "rgba(0,0,0,.35)");
+  drawQuad([[tn.x1, tn.y1], [tn.x2, tn.y1], [tn.x2, tn.y2], [tn.x1, tn.y2]], 26, "#6b4423");
+  drawFace(tn.x1, tn.y1, tn.x1 + 8, tn.y1, 0, 26, "#7a5230");
+  drawFace(tn.x2 - 8, tn.y1, tn.x2, tn.y1, 0, 26, "#7a5230");
+  drawFace(tn.x1, tn.y1, tn.x2, tn.y1, 22, 30, "#8b5a2b");
+}
+function drawTunnelFront(tn) {
+  // Near (south) end, drawn after the ball while it is inside the tube.
+  drawFace(tn.x1, tn.y2, tn.x1 + 8, tn.y2, 0, 26, "#7a5230");
+  drawFace(tn.x2 - 8, tn.y2, tn.x2, tn.y2, 0, 26, "#7a5230");
+  drawFace(tn.x1, tn.y2, tn.x2, tn.y2, 22, 30, "#8b5a2b");
+}
+function drawBlaze(bz) {
+  const gh = groundH(bz.x, bz.y);
+  const ring = groundEllipse(bz.x, bz.y, bz.swatR, gh);
+  ctx.beginPath(); ctx.ellipse(ring.x, ring.y, ring.rx, ring.ry, 0, 0, Math.PI * 2);
+  ctx.setLineDash([6, 8]); ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,80,60,.85)"; ctx.stroke();
+  ctx.setLineDash([]);
+  const c = proj(bz.x, bz.y, gh + 22);
+  if (!c) return;
+  const r = Math.max(3, 20 * c.s);
+  const bi = IMAGES.blaze;
+  ctx.save();
+  ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2); ctx.clip();
+  if (bi) {
+    const s = Math.max(2 * r / bi.width, 2 * r / bi.height);
+    ctx.drawImage(bi, c.x - bi.width * s / 2, c.y - bi.height * s / 2, bi.width * s, bi.height * s);
+  } else { ctx.fillStyle = "#ffd166"; ctx.fillRect(c.x - r, c.y - r, 2 * r, 2 * r); }
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2);
+  ctx.lineWidth = Math.max(1.5, 3 * c.s); ctx.strokeStyle = "#ffd166"; ctx.stroke();
+}
+function drawTee(h) {
+  const e = groundEllipse(h.tee[0], h.tee[1], 14, groundH(h.tee[0], h.tee[1]));
+  ctx.beginPath(); ctx.ellipse(e.x, e.y, e.rx, e.ry, 0, 0, Math.PI * 2);
+  ctx.lineWidth = 2.5; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.stroke();
+}
+function drawCup(h) {
+  const ch = groundH(h.cup[0], h.cup[1]);
+  const e = groundEllipse(h.cup[0], h.cup[1], CUP_R, ch);
+  ctx.beginPath(); ctx.ellipse(e.x, e.y, e.rx, e.ry, 0, 0, Math.PI * 2);
+  ctx.fillStyle = "#06130c"; ctx.fill();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = "rgba(255,255,255,.6)"; ctx.stroke();
+  const base = proj(h.cup[0], h.cup[1], ch), top = proj(h.cup[0], h.cup[1], ch + 34);
+  if (base && top) {
+    ctx.beginPath(); ctx.moveTo(base.x, base.y); ctx.lineTo(top.x, top.y);
+    ctx.lineWidth = 2; ctx.strokeStyle = "#fff"; ctx.stroke();
+    const fs = top.s;
+    ctx.beginPath(); ctx.moveTo(top.x, top.y);
+    ctx.lineTo(top.x + 18 * fs, top.y + 6 * fs); ctx.lineTo(top.x, top.y + 12 * fs);
+    ctx.closePath(); ctx.fillStyle = "#ef476f"; ctx.fill();
+  }
+}
+function drawBall(t) {
+  const gh = groundH(ball.x, ball.y);
+  const shH = gh === PIT ? 0 : gh; // the shadow sits on the ground below
+  const sh = groundEllipse(ball.x, ball.y, BALL_R + 2, shH);
+  ctx.beginPath(); ctx.ellipse(sh.x, sh.y, sh.rx, sh.ry, 0, 0, Math.PI * 2);
+  ctx.fillStyle = "rgba(0,0,0,.3)"; ctx.fill();
+  const c = proj(ball.x, ball.y, BALL_R + ball.z);
+  if (!c) return;
+  const hs = 1 - Math.min(0.2, ball.z * 0.0015); // a high ball reads smaller
+  const r = Math.max(2, BALL_R * c.s * (ball.loopScale || 1) * hs);
+  const g = ctx.createRadialGradient(c.x - r * 0.35, c.y - r * 0.4, r * 0.15, c.x, c.y, r);
+  g.addColorStop(0, "#ffffff"); g.addColorStop(1, "#b0bec5");
+  ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
+  ctx.lineWidth = 1.5; ctx.strokeStyle = "rgba(0,0,0,.35)"; ctx.stroke();
+  if (viewMode === "over") {
+    const pr = r + 6 + 2 * Math.sin(t * 4);
+    ctx.beginPath(); ctx.arc(c.x, c.y, pr, 0, Math.PI * 2);
+    ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,209,102,.9)"; ctx.stroke();
+  }
+}
+function drawAim() {
+  if (!aim.active || ball.moving || holeOver) return;
+  const v = aimVector();
+  if (v.len < 10) return;
+  const dirx = v.dx / v.len, diry = v.dy / v.len;
+  const L = 50 + v.power * 180;
+  const tip = { x: ball.x + dirx * L, y: ball.y + diry * L };
+  const spread = 0.23, ca = Math.cos(spread), sa = Math.sin(spread);
+  const e1 = { x: ball.x + (dirx * ca - diry * sa) * L, y: ball.y + (dirx * sa + diry * ca) * L };
+  const e2 = { x: ball.x + (dirx * ca + diry * sa) * L, y: ball.y + (-dirx * sa + diry * ca) * L };
+  const pb = proj(ball.x, ball.y, 1), pt = proj(tip.x, tip.y, 1);
+  const p1 = proj(e1.x, e1.y, 1), p2 = proj(e2.x, e2.y, 1);
+  if (!pb || !pt || !p1 || !p2) return;
+  ctx.beginPath(); ctx.moveTo(pb.x, pb.y); ctx.lineTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.closePath();
+  ctx.fillStyle = "rgba(255,255,255,.16)"; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(pb.x, pb.y); ctx.lineTo(pt.x, pt.y);
+  ctx.lineWidth = 4; ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.stroke();
+  const ax = pt.x - pb.x, ay = pt.y - pb.y, al = Math.hypot(ax, ay) || 1;
+  const ux = ax / al, uy = ay / al;
+  ctx.beginPath(); ctx.moveTo(pt.x, pt.y);
+  ctx.lineTo(pt.x - ux * 12 - uy * 7, pt.y - uy * 12 + ux * 7);
+  ctx.lineTo(pt.x - ux * 12 + uy * 7, pt.y - uy * 12 - ux * 7);
+  ctx.closePath(); ctx.fillStyle = "rgba(255,255,255,.95)"; ctx.fill();
+  const ring = groundEllipse(ball.x, ball.y, 20);
+  ctx.beginPath(); ctx.ellipse(ring.x, ring.y, ring.rx, ring.ry, 0, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * v.power);
+  ctx.lineWidth = 5; ctx.strokeStyle = v.power > 0.85 ? "#ef476f" : "#ffd166"; ctx.stroke();
+}
+function drawCourse(t) {
+  drawGround();
+  const h = hole();
+  const items = [];
+  items.push({ wy: h.tee[1], fn: () => drawTee(h) });
+  items.push({ wy: h.cup[1], fn: () => drawCup(h) });
+  (h.water || []).forEach(w => items.push({ wy: (w[2] + w[3]) / 2, fn: () => drawWater(w, t) }));
+  (h.bridges || []).forEach(b => items.push({ wy: (b.y1 + b.y2) / 2, fn: () => drawBridge(b) }));
+  (h.ramps || []).forEach(r => items.push({ wy: (r.y1 + r.y2) / 2, fn: () => drawHeightZone(r) }));
+  (h.walls || []).forEach(w => items.push({ wy: (w[1] + w[3]) / 2, fn: () => drawWall(w) }));
+  (h.pinballs || []).forEach(p => items.push({ wy: p[1], fn: () => drawPinball(p) }));
+  (h.movers || []).forEach(mv => items.push({ wy: mv.y, fn: () => drawMover(mv) }));
+  if (h.loop) items.push({ wy: h.loop.y, fn: () => drawLoop(h.loop) });
+  if (h.tunnel) items.push({ wy: (h.tunnel.y1 + h.tunnel.y2) / 2, fn: () => drawTunnelBack(h.tunnel) });
+  if (h.blaze) items.push({ wy: h.blaze.y, fn: () => drawBlaze(h.blaze) });
+  items.sort((a, b) => a.wy - b.wy); // far (north) first
+  items.forEach(it => it.fn());
+  trail.forEach((p, i) => {
+    const q = proj(p.x, p.y, 0);
+    if (!q) return;
+    ctx.beginPath(); ctx.arc(q.x, q.y, Math.max(1, (3 + 5 * (i / trail.length)) * q.s * 0.7), 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,255,255," + (0.06 + 0.2 * (i / trail.length)) + ")"; ctx.fill();
+  });
+  drawBall(t);
+  drawAim();
+  // Tunnel mouth (near end): drawn after the ball while it is inside the
+  // tube, so the ball reads as going under the arch.
+  if (h.tunnel && ball.y > h.tunnel.y1 && ball.y < h.tunnel.y2) drawTunnelFront(h.tunnel);
+  particles.forEach(p => {
+    const q = proj(p.x, p.y, 0);
+    if (!q) return;
+    ctx.globalAlpha = Math.max(0, p.life / p.max);
+    ctx.fillStyle = p.color;
+    const sz = Math.max(1.5, p.size * q.s);
+    if (p.rect) ctx.fillRect(q.x - sz / 2, q.y - sz / 2, sz, sz * 0.6);
+    else { ctx.beginPath(); ctx.arc(q.x, q.y, sz, 0, Math.PI * 2); ctx.fill(); }
+    ctx.globalAlpha = 1;
+  });
+  if (flash > 0) { ctx.fillStyle = "rgba(255,255,255," + (flash * 0.8) + ")"; ctx.fillRect(0, 0, W, H); }
+}
+
 /* ============ Update ============ */
 function update(dt, t) {
   const h = hole();
-  if (h.windmill) h.windmill.angle += h.windmill.speed * dt;
+  // The ball is riding the vertical loop: it follows the ring, over the
+  // top and back down, and comes out going north. y = loop.y - r*sin(th),
+  // z = r - r*cos(th): th 0 = bottom (entry), th PI = top, th 2PI = bottom.
+  // This runs FIRST, before the at-rest early return: entering the loop
+  // zeroes the ball's velocity, and the slow-stop would otherwise freeze
+  // the ball at the loop's mouth before the ride ever starts.
+  if (ball.inLoop) {
+    const il = ball.inLoop;
+    il.theta += (il.speed / il.L.r) * dt;
+    const th = il.theta;
+    ball.x = il.L.x;
+    ball.y = il.L.y - il.L.r * Math.sin(th);
+    ball.z = il.L.r - il.L.r * Math.cos(th);
+    ball.loopScale = 1 - 0.28 * Math.sin(th / 2); // shrinks toward the top
+    if (th >= Math.PI * 2) {
+      ball.inLoop = null; ball.loopScale = 1;
+      ball.z = 0; ball.grounded = true;
+      ball.x = il.L.x; ball.y = il.L.y - 30; // clear of the entry window,
+      // so the exiting ball can't trigger the loop again on the next frame
+      ball.vx = 0; ball.vy = -il.speed * 0.8;
+      ball.moving = true; // the exit speed must actually carry the ball on
+    }
+    return;
+  }
+  // Camera follow (runs even at rest so the view settles after a shot).
+  // It holds still while the ball rides the loop, so the view doesn't swing.
+  if (!ball.inLoop) {
+    const rate = viewMode === "over" ? 3.5 : 5;
+    let tx, ty, th;
+    if (viewMode === "over") { tx = 200; ty = 1080; th = 650; }
+    else { tx = Math.max(110, Math.min(290, ball.x)); ty = Math.min(ball.y + 150, 700); th = 180; }
+    const k = 1 - Math.exp(-rate * dt);
+    cam.cx += (tx - cam.cx) * k; cam.cy += (ty - cam.cy) * k; cam.camH += (th - cam.camH) * k;
+  }
+  if (introLeft > 0) introLeft = Math.max(0, introLeft - dt);
   if (h.blaze) { h.blaze.x = (h.blaze.min + h.blaze.max) / 2 + (h.blaze.max - h.blaze.min) / 2 * Math.sin(t * h.blaze.speed + h.blaze.phase); }
+  // Moving bumpers: slide back and forth; _vx/_vy is their own velocity,
+  // which they hand to the ball on a hit.
+  (h.movers || []).forEach(mv => {
+    const mid = (mv.min + mv.max) / 2, amp = (mv.max - mv.min) / 2;
+    const ph = t * mv.speed + mv.phase;
+    if (mv.axis === "x") {
+      mv._x = mid + amp * Math.sin(ph); mv._y = mv.y;
+      mv._vx = amp * mv.speed * Math.cos(ph); mv._vy = 0;
+    } else {
+      mv._x = mv.x; mv._y = mid + amp * Math.sin(ph);
+      mv._vx = 0; mv._vy = amp * mv.speed * Math.cos(ph);
+    }
+  });
   if (swatCooldown > 0) swatCooldown -= dt;
-  // Particles and flash tick even when the ball is at rest (e.g. during a banner).
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
     p.x += p.vx * dt; p.y += p.vy * dt; p.vy += p.rect ? 60 * dt : 0; p.life -= dt;
     if (p.life <= 0) particles.splice(i, 1);
   }
   if (flash > 0) flash = Math.max(0, flash - dt);
-  if (!ball.moving || holeOver) return;
-
-  ball.x += ball.vx * dt; ball.y += ball.vy * dt;
-  ball.vx *= Math.exp(-1.15 * dt); ball.vy *= Math.exp(-1.15 * dt);
-
-  // Course bounds (slim frame inset)
-  const m = 8;
-  if (ball.x < m + BALL_R) { ball.x = m + BALL_R; ball.vx = Math.abs(ball.vx) * 0.72; sfx.bounce(); }
-  if (ball.x > W - m - BALL_R) { ball.x = W - m - BALL_R; ball.vx = -Math.abs(ball.vx) * 0.72; sfx.bounce(); }
-  if (ball.y < m + BALL_R) { ball.y = m + BALL_R; ball.vy = Math.abs(ball.vy) * 0.72; sfx.bounce(); }
-  if (ball.y > H - m - BALL_R) { ball.y = H - m - BALL_R; ball.vy = -Math.abs(ball.vy) * 0.72; sfx.bounce(); }
-
-  (h.walls || []).forEach(w => collideSegment(w[0], w[1], w[2], w[3]));
-  (h.bumpers || []).forEach(b => collideCircle(b[0], b[1], BUMPER_R, true));
-
-  if (h.loop) {
-    const dx = ball.x - h.loop.x, dy = ball.y - h.loop.y, d = Math.hypot(dx, dy);
-    const ang = Math.atan2(dy, dx);
-    if (!inGap(ang, h.loop.gapA, h.loop.gapB) && Math.abs(d - h.loop.r) < BALL_R && d > 0.001) {
-      const nx = dx / d, ny = dy / d;
-      const dot = ball.vx * nx + ball.vy * ny;
-      ball.x = h.loop.x + nx * (h.loop.r + (d < h.loop.r ? -BALL_R : BALL_R));
-      ball.y = h.loop.y + ny * (h.loop.r + (d < h.loop.r ? -BALL_R : BALL_R));
-      if ((d < h.loop.r && dot > 0) || (d > h.loop.r && dot < 0)) {
-        ball.vx -= 2 * dot * nx; ball.vy -= 2 * dot * ny;
-        ball.vx *= 0.72; ball.vy *= 0.72; sfx.bounce();
+  if (!ball.moving || holeOver) {
+    // A ball at rest on a slope starts rolling back down — unless it was
+    // pinned against a wall (the stuck detector set pinned), in which case
+    // it stays put so the player can shoot.
+    if (!ball.moving && !holeOver && ball.grounded && !ball.pinned) {
+      const sl = slopeAt(ball.x, ball.y);
+      const ax = -SLOPE_G * sl.gx, ay = -SLOPE_G * sl.gy;
+      if (Math.hypot(ax, ay) > 60) {
+        ball.moving = true; ball.vx = ax * 0.1; ball.vy = ay * 0.1;
       }
     }
+    if (!ball.moving || holeOver) return;
   }
-  if (h.windmill) {
-    const wm = h.windmill;
-    for (let k = 0; k < 2; k++) {
-      const a = wm.angle + k * Math.PI / 2;
-      collideSegment(wm.x - Math.cos(a) * wm.len, wm.y - Math.sin(a) * wm.len,
-                     wm.x + Math.cos(a) * wm.len, wm.y + Math.sin(a) * wm.len);
+
+
+  // Substep the physics so a fast ball can't tunnel through a thin
+  // wall: at full power it moves ~13px per frame, more than its radius,
+  // so it could jump clean past a wall line in one step.
+  const sub = Math.max(1, Math.ceil(Math.hypot(ball.vx, ball.vy) * dt / 5));
+  const sdt = dt / sub;
+  for (let _s = 0; _s < sub; _s++) {
+    const prevZ = ball.z;
+    const slBefore = ball.grounded ? slopeAt(ball.x, ball.y) : { gx: 0, gy: 0 };
+    ball.x += ball.vx * sdt; ball.y += ball.vy * sdt;
+    // Gravity along the slope (grounded only): it fights the climb and
+    // speeds the ball down a downhill.
+    if (ball.grounded) {
+      ball.vx += -SLOPE_G * slBefore.gx * sdt;
+      ball.vy += -SLOPE_G * slBefore.gy * sdt;
     }
-  }
-  if (h.gate) {
-    const g = h.gate;
-    const gx = (g.min + g.max) / 2 + (g.max - g.min) / 2 * Math.sin(t * g.speed + g.phase);
-    collideSegment(gx, g.y, gx + g.len, g.y);
-    g._x = gx;
-  }
-  if (h.blaze && swatCooldown <= 0) {
-    const bd = Math.hypot(ball.x - h.blaze.x, ball.y - h.blaze.y);
-    if (bd < h.blaze.swatR) {
-      const nx = (ball.x - h.blaze.x) / (bd || 1), ny = (ball.y - h.blaze.y) / (bd || 1);
-      ball.vx = nx * 520; ball.vy = ny * 520 - 60;
-      swatCooldown = 0.6; sfx.swat(); flash = 0.25;
-      burst(ball.x, ball.y, ["#ff9f1c", "#ffffff"], 16, 260);
+    ball.vx *= Math.exp(-1.15 * sdt); ball.vy *= Math.exp(-1.15 * sdt);
+
+    // Height: rolling on the ground follows it; rolling off an edge launches
+    // the ball with the vertical speed it had on the slope (the kicker).
+    if (ball.grounded) {
+      const gh = groundH(ball.x, ball.y);
+      if (gh === PIT) {
+        ball.grounded = false;
+        ball.vz = Math.max(0, slBefore.gx * ball.vx + slBefore.gy * ball.vy);
+        ball.z = prevZ;
+      } else {
+        ball.z = gh;
+      }
     }
-  }
-  // Cup: sunk when the center reaches the cup.
-  const cd = Math.hypot(ball.x - h.cup[0], ball.y - h.cup[1]);
-  if (cd < CUP_R) {
-    ball.moving = false; ball.x = h.cup[0]; ball.y = h.cup[1];
-    endHole(); return;
-  }
-  trail.push({ x: ball.x, y: ball.y });
-  if (trail.length > 14) trail.shift();
-  const speed = Math.hypot(ball.vx, ball.vy);
-  if (speed < 14) {
-    ball.moving = false; ball.vx = 0; ball.vy = 0;
-    if (strokesThisHole >= MAX_STROKES) {
-      holeOver = true; holeScores.push(strokesThisHole);
-      showBanner("Max strokes");
-      setTimeout(() => {
-        if (holeIndex >= HOLES.length - 1) finishRound();
-        else startHole(holeIndex + 1);
-      }, 1100);
+    if (!ball.grounded) {
+      ball.z += ball.vz * sdt; ball.vz -= GRAV_Z * sdt;
+      const gh = groundH(ball.x, ball.y);
+      if (gh === PIT) {
+        if (ball.z <= 0) { splash(); return; }
+      } else if (ball.z <= gh) {
+        ball.z = gh; ball.vz = 0; ball.grounded = true;
+      }
+    }
+
+    // Course bounds (slim frame inset)
+    const m = 8;
+    if (ball.x < m + BALL_R) { ball.x = m + BALL_R; ball.vx = Math.abs(ball.vx) * 0.72; sfx.bounce(); }
+    if (ball.x > W - m - BALL_R) { ball.x = W - m - BALL_R; ball.vx = -Math.abs(ball.vx) * 0.72; sfx.bounce(); }
+    if (ball.y < m + BALL_R) { ball.y = m + BALL_R; ball.vy = Math.abs(ball.vy) * 0.72; sfx.bounce(); }
+    if (ball.y > H - m - BALL_R) { ball.y = H - m - BALL_R; ball.vy = -Math.abs(ball.vy) * 0.72; sfx.bounce(); }
+
+    // Ground collisions only — a ball flying over a wall or bumper (a jump)
+    // passes it cleanly.
+    if (ball.grounded) {
+      (h.walls || []).forEach(w => collideSegment(w[0], w[1], w[2], w[3]));
+      (h.pinballs || []).forEach(p => collideCircle(p[0], p[1], 12, true, 0, 0, 1.5));
+      (h.movers || []).forEach(mv => {
+        if (mv._x !== undefined) collideCircle(mv._x, mv._y, mv.r, true, mv._vx, mv._vy, 0);
+      });
+      // Vertical loop entry: the ball must be lined up and moving north
+      // fast enough. Too slow, and it bounces off the loop's base.
+      if (h.loop) {
+        const L = h.loop;
+        const dx = ball.x - L.x, dy = ball.y - L.y;
+        if (Math.abs(dx) < 24 && Math.abs(dy) < 24) {
+          if (ball.vy < -L.minSpeed && Math.abs(ball.vx) < 260) {
+            ball.inLoop = { L, theta: 0, speed: Math.hypot(ball.vx, ball.vy) };
+            ball.vx = 0; ball.vy = 0;
+          } else {
+            collideCircle(L.x, L.y, 16, false);
+          }
+        }
+      }
+      // Blaze swats only a moving ball on the ground — a sunk ball is never
+      // swatted out (sinking sets moving false first).
+      if (h.blaze && swatCooldown <= 0) {
+        const bd = Math.hypot(ball.x - h.blaze.x, ball.y - h.blaze.y);
+        if (bd < h.blaze.swatR) {
+          const nx = (ball.x - h.blaze.x) / (bd || 1), ny = (ball.y - h.blaze.y) / (bd || 1);
+          ball.vx = nx * 520; ball.vy = ny * 520 - 60;
+          swatCooldown = 0.6; sfx.swat(); flash = 0.25;
+          burst(ball.x, ball.y, ["#ff9f1c", "#ffffff"], 16, 260);
+        }
+      }
+      // Cup: sunk when the center reaches the cup (on the ground only).
+      const cd = Math.hypot(ball.x - h.cup[0], ball.y - h.cup[1]);
+      if (cd < CUP_R) {
+        ball.moving = false; ball.x = h.cup[0]; ball.y = h.cup[1]; ball.z = groundH(h.cup[0], h.cup[1]);
+        endHole(); return;
+      }
+    }
+    trail.push({ x: ball.x, y: ball.y });
+    if (trail.length > 14) trail.shift();
+    const speed = Math.hypot(ball.vx, ball.vy);
+    // Stuck detector: a ball pressed against a wall on a slope would never
+    // count as stopped — if it hasn't moved in half a second, stop it.
+    if (speed < 30) {
+      if (Math.hypot(ball.x - restX, ball.y - restY) > 3) {
+        restX = ball.x; restY = ball.y; restTimer = 0;
+      } else {
+        restTimer += sdt;
+        if (restTimer > 0.5) {
+          ball.moving = false; ball.vx = 0; ball.vy = 0; ball.pinned = true;
+          updateHud();
+          if (strokesThisHole >= h.par + 4) failHole();
+          return;
+        }
+      }
+    } else { restX = ball.x; restY = ball.y; restTimer = 0; }
+    if (speed < 14) {
+      // On a slope the ball keeps rolling back down instead of stopping.
+      const sl = slopeAt(ball.x, ball.y);
+      if (Math.hypot(-SLOPE_G * sl.gx, -SLOPE_G * sl.gy) <= 60) {
+        ball.moving = false; ball.vx = 0; ball.vy = 0;
+        updateHud(); // re-enable the redo button now the ball is at rest
+        if (strokesThisHole >= h.par + 4) failHole();
+      }
     }
   }
 }
@@ -590,144 +1366,6 @@ function drawContain(img) {
   const dx = (W - dw) / 2, dy = (H - dh) / 2;
   ctx.drawImage(img, dx, dy, dw, dh);
   return { dx, dy, dw, dh };
-}
-function drawSurface(img) {
-  ctx.fillStyle = "#14532d"; ctx.fillRect(0, 0, W, H);
-  if (img) {
-    const r = drawContain(img);
-    ctx.fillStyle = "rgba(8, 20, 12, 0.32)"; // readability wash
-    ctx.fillRect(r.dx, r.dy, r.dw, r.dh);
-  }
-  ctx.strokeStyle = "rgba(245, 240, 225, 0.9)"; ctx.lineWidth = 3; // slim frame
-  ctx.strokeRect(4, 4, W - 8, H - 8);
-}
-function drawYarnBall(x, y, r) {
-  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
-  ctx.fillStyle = "#3b82f6"; ctx.fill();
-  ctx.lineWidth = 2; ctx.strokeStyle = "#1d4ed8"; ctx.stroke();
-  ctx.beginPath(); ctx.arc(x - r * 0.3, y - r * 0.3, r * 0.35, 0, Math.PI * 2);
-  ctx.fillStyle = "rgba(255,255,255,.55)"; ctx.fill();
-}
-function drawCourse(t) {
-  const h = hole();
-  const img = IMAGES["hole" + (holeIndex + 1)];
-  drawSurface(img || null);
-  if (!img) { ctx.fillStyle = "#fff"; ctx.font = "700 20px system-ui"; ctx.textAlign = "center"; ctx.fillText(h.name, W / 2, H / 2); }
-  // Tee spot: plain white ring
-  ctx.beginPath(); ctx.arc(h.tee[0], h.tee[1], 14, 0, Math.PI * 2);
-  ctx.lineWidth = 2.5; ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.stroke();
-  // Walls
-  ctx.lineCap = "round";
-  (h.walls || []).forEach(w => {
-    ctx.beginPath(); ctx.moveTo(w[0], w[1]); ctx.lineTo(w[2], w[3]);
-    ctx.lineWidth = 10; ctx.strokeStyle = "#d9c49a"; ctx.stroke();
-    ctx.lineWidth = 6; ctx.strokeStyle = "#b89b62"; ctx.stroke();
-  });
-  // Yarn loop
-  if (h.loop) {
-    const L = h.loop;
-    ctx.beginPath(); ctx.arc(L.x, L.y, L.r, L.gapB, L.gapA + Math.PI * 2);
-    ctx.lineWidth = 12; ctx.strokeStyle = "#f27059"; ctx.stroke();
-    ctx.beginPath(); ctx.arc(L.x, L.y, L.r, L.gapB, L.gapA + Math.PI * 2);
-    ctx.lineWidth = 6; ctx.strokeStyle = "#ff9d8a"; ctx.stroke();
-    drawYarnBall(L.x + Math.cos(L.gapA) * L.r, L.y + Math.sin(L.gapA) * L.r, 10);
-  }
-  // Fish windmill: gold hub, two arms, simple gold fish blades
-  if (h.windmill) {
-    const wm = h.windmill;
-    for (let k = 0; k < 2; k++) {
-      const a = wm.angle + k * Math.PI / 2;
-      ctx.beginPath(); ctx.moveTo(wm.x - Math.cos(a) * wm.len, wm.y - Math.sin(a) * wm.len);
-      ctx.lineTo(wm.x + Math.cos(a) * wm.len, wm.y + Math.sin(a) * wm.len);
-      ctx.lineWidth = 7; ctx.strokeStyle = "#c9a227"; ctx.stroke();
-      [1, -1].forEach(s => {
-        const fx = wm.x + Math.cos(a) * wm.len * s, fy = wm.y + Math.sin(a) * wm.len * s;
-        ctx.beginPath(); ctx.ellipse(fx, fy, 16, 9, a, 0, Math.PI * 2);
-        ctx.fillStyle = "#f4b942"; ctx.fill();
-        ctx.beginPath(); ctx.moveTo(fx - Math.cos(a) * 16 * s, fy - Math.sin(a) * 16 * s);
-        ctx.lineTo(fx - Math.cos(a) * 26 * s - Math.sin(a) * 8, fy - Math.sin(a) * 26 * s + Math.cos(a) * 8);
-        ctx.lineTo(fx - Math.cos(a) * 26 * s + Math.sin(a) * 8, fy - Math.sin(a) * 26 * s - Math.cos(a) * 8);
-        ctx.closePath(); ctx.fillStyle = "#e09f1f"; ctx.fill();
-      });
-    }
-    ctx.beginPath(); ctx.arc(wm.x, wm.y, 12, 0, Math.PI * 2);
-    ctx.fillStyle = "#ffd166"; ctx.fill();
-    ctx.lineWidth = 2; ctx.strokeStyle = "#8a6d00"; ctx.stroke();
-  }
-  // Sliding gate
-  if (h.gate) {
-    const gx = h.gate._x !== undefined ? h.gate._x : (h.gate.min + h.gate.max) / 2;
-    ctx.beginPath(); ctx.moveTo(gx, h.gate.y); ctx.lineTo(gx + h.gate.len, h.gate.y);
-    ctx.lineWidth = 10; ctx.strokeStyle = "#d9c49a"; ctx.stroke();
-    ctx.lineWidth = 6; ctx.strokeStyle = "#b89b62"; ctx.stroke();
-  }
-  // Bumpers: blue yarn balls
-  (h.bumpers || []).forEach(b => drawYarnBall(b[0], b[1], BUMPER_R));
-  // Blaze hazard: title-card cat portrait in a gold medallion + dashed swat ring (John's supplied art)
-  if (h.blaze) {
-    ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, h.blaze.swatR, 0, Math.PI * 2);
-    ctx.setLineDash([6, 8]); ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,80,60,.85)"; ctx.stroke();
-    ctx.setLineDash([]);
-    const bi = IMAGES.blaze;
-    if (bi) {
-      ctx.save();
-      ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, 20, 0, Math.PI * 2); ctx.clip();
-      const s = Math.max(40 / bi.width, 40 / bi.height);
-      ctx.drawImage(bi, h.blaze.x - bi.width * s / 2, h.blaze.y - bi.height * s / 2, bi.width * s, bi.height * s);
-      ctx.restore();
-      ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, 20, 0, Math.PI * 2);
-      ctx.lineWidth = 3; ctx.strokeStyle = "#ffd166"; ctx.stroke();
-    } else {
-      ctx.beginPath(); ctx.arc(h.blaze.x, h.blaze.y, 20, 0, Math.PI * 2);
-      ctx.fillStyle = "#ffd166"; ctx.fill();
-      ctx.lineWidth = 3; ctx.strokeStyle = "#8a6d00"; ctx.stroke();
-      ctx.fillStyle = "#1a1207"; ctx.font = "900 11px system-ui"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillText("BLAZE", h.blaze.x, h.blaze.y);
-      ctx.textBaseline = "alphabetic";
-    }
-  }
-  // Cup + flag
-  ctx.beginPath(); ctx.arc(h.cup[0], h.cup[1], CUP_R, 0, Math.PI * 2);
-  ctx.fillStyle = "#06130c"; ctx.fill();
-  ctx.lineWidth = 2; ctx.strokeStyle = "rgba(255,255,255,.6)"; ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(h.cup[0], h.cup[1]); ctx.lineTo(h.cup[0], h.cup[1] - 34);
-  ctx.lineWidth = 2; ctx.strokeStyle = "#fff"; ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(h.cup[0], h.cup[1] - 34); ctx.lineTo(h.cup[0] + 18, h.cup[1] - 28); ctx.lineTo(h.cup[0], h.cup[1] - 22);
-  ctx.closePath(); ctx.fillStyle = "#ef476f"; ctx.fill();
-  // Motion trail
-  trail.forEach((p, i) => {
-    ctx.beginPath(); ctx.arc(p.x, p.y, 3 + 5 * (i / trail.length), 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(255,255,255," + (0.06 + 0.2 * (i / trail.length)) + ")"; ctx.fill();
-  });
-  // Ball
-  ctx.beginPath(); ctx.arc(ball.x, ball.y, BALL_R, 0, Math.PI * 2);
-  ctx.fillStyle = "#ffffff"; ctx.fill();
-  ctx.lineWidth = 1.5; ctx.strokeStyle = "rgba(0,0,0,.35)"; ctx.stroke();
-  // Aim arrow + power ring
-  if (aim.active && screen === "play" && !ball.moving && !holeOver) {
-    const v = aimVector();
-    if (v.len >= 10) {
-      const dirx = v.dx / v.len, diry = v.dy / v.len;
-      const ax = ball.x + dirx * (26 + v.power * 70), ay = ball.y + diry * (26 + v.power * 70);
-      ctx.beginPath(); ctx.moveTo(ball.x + dirx * 14, ball.y + diry * 14); ctx.lineTo(ax, ay);
-      ctx.lineWidth = 4; ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(ax, ay);
-      ctx.lineTo(ax - dirx * 12 - diry * 7, ay - diry * 12 + dirx * 7);
-      ctx.lineTo(ax - dirx * 12 + diry * 7, ay - diry * 12 - dirx * 7);
-      ctx.closePath(); ctx.fillStyle = "rgba(255,255,255,.95)"; ctx.fill();
-      ctx.beginPath(); ctx.arc(ball.x, ball.y, 20, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * v.power);
-      ctx.lineWidth = 5; ctx.strokeStyle = v.power > 0.85 ? "#ef476f" : "#ffd166"; ctx.stroke();
-    }
-  }
-  // Particles
-  particles.forEach(p => {
-    ctx.globalAlpha = Math.max(0, p.life / p.max);
-    ctx.fillStyle = p.color;
-    if (p.rect) ctx.fillRect(p.x, p.y, p.size, p.size * 0.6);
-    else { ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); }
-    ctx.globalAlpha = 1;
-  });
-  if (flash > 0) { ctx.fillStyle = "rgba(255,255,255," + (flash * 0.8) + ")"; ctx.fillRect(0, 0, W, H); }
 }
 function render(t) {
   ctx.clearRect(0, 0, W, H);
@@ -743,6 +1381,23 @@ function render(t) {
     else { ctx.fillStyle = "#fff"; ctx.font = "700 20px system-ui"; ctx.textAlign = "center"; ctx.fillText("Find BlazeLogic Everywhere", W / 2, H / 2); }
   } else if (screen === "play") {
     drawCourse(t);
+    // Hole intro card: the hole's poster, full screen, for the first moment
+    // of the hole (tap skips). The posters are the holes' identity; the
+    // ground itself stays a readable green.
+    if (introLeft > 0) {
+      const img = IMAGES["hole" + (holeIndex + 1)];
+      ctx.fillStyle = "rgba(6,18,12,.92)"; ctx.fillRect(0, 0, W, H);
+      if (img) drawContain(img);
+      ctx.fillStyle = "rgba(0,0,0,.55)"; ctx.fillRect(0, H - 140, W, 140);
+      ctx.fillStyle = "#fff"; ctx.textAlign = "center";
+      ctx.font = "900 24px system-ui";
+      ctx.fillText("Hole " + (holeIndex + 1) + " · " + hole().name, W / 2, H - 104);
+      ctx.font = "700 17px system-ui";
+      ctx.fillText("Par " + hole().par + "   ·   Tap to play", W / 2, H - 74);
+      ctx.font = "600 14px system-ui"; ctx.fillStyle = "#ffd166";
+      ctx.fillText(hole().tip || "", W / 2, H - 42);
+      ctx.textAlign = "left";
+    }
   } else if (screen === "finish") {
     const img = IMAGES["hole9"];
     ctx.fillStyle = "#0a241a"; ctx.fillRect(0, 0, W, H);
@@ -754,7 +1409,17 @@ function render(t) {
       ctx.globalAlpha = 1;
     });
   }
-  // Keep particles ticking on the finish screen too
+  // Power bar follows the aim drag.
+  const pw = document.getElementById("powerWrap");
+  if (aim.active && screen === "play" && !ball.moving && !holeOver) {
+    const v = aimVector();
+    pw.classList.remove("hidden");
+    const fill = document.getElementById("powerFill");
+    fill.style.width = (v.power * 100) + "%";
+    fill.style.background = v.power > 0.85 ? "#ef476f" : v.power > 0.55 ? "#ffd166" : "#06d6a0";
+  } else {
+    pw.classList.add("hidden");
+  }
   if (screen === "finish") {
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
@@ -769,7 +1434,7 @@ function loop(ts) {
   const t = ts / 1000;
   const dt = Math.min((ts - lastTime) / 1000 || 0, 0.05);
   lastTime = ts;
-  if (screen === "play") update(dt, t);
+  if (screen === "play" && !paused) update(dt, t);
   render(t);
   requestAnimationFrame(loop);
 }
