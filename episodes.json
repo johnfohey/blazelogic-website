@@ -1,7 +1,17 @@
 {
-  "updated": "2026-11-18T21:53:25Z",
+  "updated": "2026-11-20T21:47:31Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-9434fbbb-83ad-479a-8f4b-ddb436906e9a",
+      "title": "Fairways & Side Bets — Weekend Tee Box — November 20, 2026",
+      "pubDate": "2026-11-20",
+      "pubDateDisplay": "November 20, 2026",
+      "audioUrl": "audio/ep-9434fbbb-83ad-479a-8f4b-ddb436906e9a.mp3",
+      "duration": "274",
+      "durationDisplay": "4:34",
+      "description": "Alex and Jordan preview a weekend with two season finales at once: the FedExCup Fall card fight at the RSM Classic in Sea Island and Jeeno Thitikul's three-peat chase at the CME Group Tour Championship in Naples — plus B…"
+    },
     {
       "id": "ep-997e6324-f6f9-48d7-a869-41e97ab3d1b3",
       "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 18, 2026",
@@ -31,16 +41,6 @@
       "duration": "272",
       "durationDisplay": "4:32",
       "description": "Alex and Jordan preview a red-hot weekend: Trace Crowe leads the Austin Championship after a record 62, and two 61s top the board at The Annika — plus a Stableford game to try Saturday and a free groove-cleaning fix. AI …"
-    },
-    {
-      "id": "ep-bae7986a-56dd-40bb-a111-8f95594cb87b",
-      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 11, 2026",
-      "pubDate": "2026-11-11",
-      "pubDateDisplay": "November 11, 2026",
-      "audioUrl": "audio/ep-bae7986a-56dd-40bb-a111-8f95594cb87b.mp3",
-      "duration": "305",
-      "durationDisplay": "5:05",
-      "description": "Alex and Jordan explain how cold weather steals your yardage — about two yards a club for every ten degrees — and share practical fixes: warm balls, layered clothing, a longer warm-up, and when preferred lies apply. AI G…"
     }
   ]
 }
