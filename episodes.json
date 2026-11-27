@@ -1,7 +1,17 @@
 {
-  "updated": "2026-11-25T23:03:50Z",
+  "updated": "2026-11-27T22:40:08Z",
   "feed": "https://fairways-side-bets-feed-blaze-logic.vercel.app/feed.xml",
   "episodes": [
+    {
+      "id": "ep-480b3275-ad78-4431-974b-847ce5948b72",
+      "title": "Fairways & Side Bets — Weekend Tee Box — November 27, 2026",
+      "pubDate": "2026-11-27",
+      "pubDateDisplay": "November 27, 2026",
+      "audioUrl": "audio/ep-480b3275-ad78-4431-974b-847ce5948b72.mp3",
+      "duration": "273",
+      "durationDisplay": "4:33",
+      "description": "Alex and Jordan preview the weekend from Sydney, where Nicolai von Dellingshausen leads the BMW Australian PGA Championship after a Friday albatross, plus a scramble format to try Saturday and a ten-second gear check bef…"
+    },
     {
       "id": "ep-c45fda57-fa52-42ac-b55d-6a31473804b4",
       "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 25, 2026",
@@ -31,16 +41,6 @@
       "duration": "274",
       "durationDisplay": "4:34",
       "description": "Alex and Jordan preview a weekend with two season finales at once: the FedExCup Fall card fight at the RSM Classic in Sea Island and Jeeno Thitikul's three-peat chase at the CME Group Tour Championship in Naples — plus B…"
-    },
-    {
-      "id": "ep-997e6324-f6f9-48d7-a869-41e97ab3d1b3",
-      "title": "Fairways & Side Bets — Everyday Golfer / BlazeLogic — November 18, 2026",
-      "pubDate": "2026-11-18",
-      "pubDateDisplay": "November 18, 2026",
-      "audioUrl": "audio/ep-997e6324-f6f9-48d7-a869-41e97ab3d1b3.mp3",
-      "duration": "259",
-      "durationDisplay": "4:19",
-      "description": "Alex and Jordan explain red and yellow penalty areas, out of bounds, and when a provisional ball is — and is not — the right call, so you know your relief before you drop. AI Generated"
     }
   ]
 }
